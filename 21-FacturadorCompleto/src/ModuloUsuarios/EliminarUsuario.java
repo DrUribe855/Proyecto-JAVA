@@ -390,7 +390,6 @@ public class EliminarUsuario extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         String cedula = campoCedula.getText();
         if (!cedula.equals("")) {
-            System.out.print("test");
             boolean proceso = (this.titulo.equalsIgnoreCase("CLIENTES"))? this.ventanaMenu.database.eliminarUsuario(cedula,"clientes") : this.ventanaMenu.database.eliminarUsuario(cedula, "vendedores");
             if(proceso){
                 dispose();

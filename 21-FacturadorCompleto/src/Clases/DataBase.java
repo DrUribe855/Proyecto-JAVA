@@ -185,4 +185,19 @@ public class DataBase {
         }
     }
     
+    public boolean registrarProducto(int id, String nombre, int precio){
+        String consulta = "INSERT into productos(id, nombre, precio) values ('"+id+"','"+nombre+"','"+precio+"')";
+        try {
+            int respuesta = manipularDB.executeUpdate(consulta);
+            if(respuesta > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al insertar: " + e.getMessage());
+            return false;
+        }
+    }
+    
 }
