@@ -168,4 +168,21 @@ public class DataBase {
         }
     }
     
+    public boolean eliminarUsuario(String cedula, String tipo){
+        
+        String tabla = (tipo.equals("clientes")? "clientes" : "vendedores");
+        try {
+            String consulta = "DELETE FROM " + tabla + " WHERE cedula = '"+cedula+"' ";
+            int resp_consulta = manipularDB.executeUpdate(consulta);
+            if(resp_consulta > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error Delete --> " + e.getMessage());
+            return false;
+        }
+    }
+    
 }

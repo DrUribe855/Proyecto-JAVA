@@ -10,6 +10,7 @@ import ModuloFacturas.CrearFactura;
 import ModuloProductos.CrearProducto;
 import ModuloProductos.ListarProductos;
 import ModuloProductos.ModificarProductos;
+import ModuloUsuarios.EliminarUsuario;
 import java.awt.Toolkit;
 import javax.swing.*;
 
@@ -143,6 +144,11 @@ public class Menu extends JFrame {
         btnEliminarCliente.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarCliente.setText("Eliminar");
         btnEliminarCliente.setFocusable(false);
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
 
         btnListarClientes.setBackground(new java.awt.Color(0, 0, 153));
         btnListarClientes.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -216,6 +222,11 @@ public class Menu extends JFrame {
         btnEliminarVendedor.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarVendedor.setText("Eliminar");
         btnEliminarVendedor.setFocusable(false);
+        btnEliminarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarVendedorActionPerformed(evt);
+            }
+        });
 
         btnListarVendedores.setBackground(new java.awt.Color(0, 0, 153));
         btnListarVendedores.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -512,6 +523,18 @@ public class Menu extends JFrame {
     private void btnModificarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarFacturaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnModificarFacturaActionPerformed
+
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        setVisible(false);
+        EliminarUsuario ventana = new EliminarUsuario(this, "CLIENTES");
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
+
+    private void btnEliminarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVendedorActionPerformed
+        setVisible(false);
+        EliminarUsuario ventana = new EliminarUsuario(this,"VENDEDORES");
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnEliminarVendedorActionPerformed
     
     public void initAlternComponents(){
         setLocationRelativeTo(null);
