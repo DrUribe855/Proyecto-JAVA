@@ -1,54 +1,52 @@
 package Principal;
 
-import Clases.DataBase;
-import ModuloUsuarios.CrearUsuario;
-import ModuloUsuarios.ListarUsuarios;
-import ModuloUsuarios.ModificarUsuario;
+import Clases.*;
+import ModuloUsuarios.*;
 import Clases.Persona;
 import Clases.Producto;
-import ModuloFacturas.CrearFactura;
-import ModuloProductos.CrearProducto;
-import ModuloProductos.ListarProductos;
-import ModuloProductos.ModificarProductos;
+import ModuloFacturas.*;
+import ModuloProductos.*;
+
 import java.awt.Toolkit;
 import javax.swing.*;
 
 public class Menu extends JFrame {
-    
+
     public DataBase database;
-    public Persona listaClientes [];
-    public Persona listaVendedores [];
-    public Producto listaProductos [];
+    public Persona listaClientes[];
+    public Persona listaVendedores[];
+    public Producto listaProductos[];
+    public ListaFacturas facturas[];
     public int indexClientes;
     public int indexVendedores;
-    
+
     public Menu() {
         this.database = new DataBase();
-        
-        this.listaClientes = new Persona [100];
-        this.listaVendedores = new Persona [100];
-        this.listaProductos = new Producto [100];
+        this.facturas = new ListaFacturas[100];
+        this.listaClientes = new Persona[100];
+        this.listaVendedores = new Persona[100];
+        this.listaProductos = new Producto[100];
         this.indexClientes = 5;
         this.indexVendedores = 5;
-        
+
         this.listaClientes[0] = new Persona("108800", "Juan", "Perez", "300001", "Calle 20", "cliente01@mail.com");
         this.listaClientes[1] = new Persona("108801", "Manuel", "Molina", "300002", "Calle 21", "cliente02@mail.com");
         this.listaClientes[2] = new Persona("108802", "Jose", "Gonzalez", "300003", "Calle 22", "cliente03@mail.com");
         this.listaClientes[3] = new Persona("108803", "Ana", "Mendoza", "300004", "Calle 23", "cliente04@mail.com");
         this.listaClientes[4] = new Persona("108804", "Sofia", "Segura", "300005", "Calle 24", "cliente05@mail.com");
-        
+
         this.listaVendedores[0] = new Persona("108805", "Andres", "Perez", "300011", "Calle 25", "vendedor01@mail.com");
         this.listaVendedores[1] = new Persona("108806", "Julian", "Molina", "300012", "Calle 26", "vendedor02@mail.com");
         this.listaVendedores[2] = new Persona("108807", "Camilo", "Gonzalez", "300013", "Calle 27", "vendedor03@mail.com");
         this.listaVendedores[3] = new Persona("108808", "Maria", "Mendoza", "300014", "Calle 28", "vendedor04@mail.com");
         this.listaVendedores[4] = new Persona("108809", "Carolina", "Segura", "300015", "Calle 29", "vendedor05@mail.com");
-        
+
         this.listaProductos[0] = new Producto(1010, "Leche", 3500);
         this.listaProductos[1] = new Producto(1011, "Arroz Lb", 2500);
         this.listaProductos[2] = new Producto(1012, "Arroz Kg", 4800);
         this.listaProductos[3] = new Producto(1013, "Detergente Lb", 4400);
         this.listaProductos[4] = new Producto(1014, "Detergente Kg", 8000);
-        
+
         initComponents();
         initAlternComponents();
     }
@@ -81,7 +79,7 @@ public class Menu extends JFrame {
         etiquetaFactura = new javax.swing.JLabel();
         contentFacturas = new javax.swing.JPanel();
         btnCrearFactura = new javax.swing.JButton();
-        btnModificarFactura = new javax.swing.JButton();
+        btnlistarFactura = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Usuarios");
@@ -346,14 +344,14 @@ public class Menu extends JFrame {
             }
         });
 
-        btnModificarFactura.setBackground(new java.awt.Color(0, 0, 153));
-        btnModificarFactura.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        btnModificarFactura.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificarFactura.setText("LISTAR");
-        btnModificarFactura.setFocusable(false);
-        btnModificarFactura.addActionListener(new java.awt.event.ActionListener() {
+        btnlistarFactura.setBackground(new java.awt.Color(0, 0, 153));
+        btnlistarFactura.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        btnlistarFactura.setForeground(new java.awt.Color(255, 255, 255));
+        btnlistarFactura.setText("LISTAR");
+        btnlistarFactura.setFocusable(false);
+        btnlistarFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarFacturaActionPerformed(evt);
+                btnlistarFacturaActionPerformed(evt);
             }
         });
 
@@ -365,7 +363,7 @@ public class Menu extends JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(btnCrearFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnModificarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnlistarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         contentFacturasLayout.setVerticalGroup(
@@ -374,7 +372,7 @@ public class Menu extends JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(contentFacturasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrearFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnlistarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -451,7 +449,7 @@ public class Menu extends JFrame {
 
     private void btnCrearClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearClienteActionPerformed
         setVisible(false);
-        
+
         CrearUsuario ventana = new CrearUsuario(this, this.listaClientes, "CLIENTE");
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCrearClienteActionPerformed
@@ -464,7 +462,7 @@ public class Menu extends JFrame {
 
     private void btnCrearVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearVendedorActionPerformed
         setVisible(false);
-        
+
         CrearUsuario ventana = new CrearUsuario(this, this.listaVendedores, "VENDEDOR");
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCrearVendedorActionPerformed
@@ -483,45 +481,47 @@ public class Menu extends JFrame {
 
     private void btnCrearProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearProductoActionPerformed
         setVisible(false);
-        
+
         CrearProducto ventana = new CrearProducto(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCrearProductoActionPerformed
 
     private void btnModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProductoActionPerformed
         setVisible(false);
-        
+
         ModificarProductos ventana = new ModificarProductos(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnModificarProductoActionPerformed
 
     private void btnListarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarProductosActionPerformed
         setVisible(false);
-        
+
         ListarProductos ventana = new ListarProductos(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnListarProductosActionPerformed
 
     private void btnCrearFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearFacturaActionPerformed
         setVisible(false);
-        
-        CrearFactura ventana = new CrearFactura(this, this.listaClientes, this.listaVendedores, this.listaProductos);
+
+        CrearFactura ventana = new CrearFactura(this, this.listaClientes, this.listaVendedores, this.listaProductos, this.facturas);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCrearFacturaActionPerformed
 
-    private void btnModificarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarFacturaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnModificarFacturaActionPerformed
-    
-    public void initAlternComponents(){
+    private void btnlistarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlistarFacturaActionPerformed
+        setVisible(false);
+        ListarFactura ventana = new ListarFactura(this, this.facturas);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnlistarFacturaActionPerformed
+
+    public void initAlternComponents() {
         setLocationRelativeTo(null);
-        setIconImage( getToolkit().createImage( ClassLoader.getSystemResource("imagenes/icono_almacenes.png") ) );
+        setIconImage(getToolkit().createImage(ClassLoader.getSystemResource("imagenes/icono_almacenes.png")));
     }
-    
-    public void alertCreacionUsuario(){
+
+    public void alertCreacionUsuario() {
         Alert alerta = new Alert("CORRECTO", "Se ha creado un nuevo usuario.", "success");
     }
-   
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -529,7 +529,7 @@ public class Menu extends JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearCliente;
     private javax.swing.JButton btnCrearFactura;
@@ -542,9 +542,9 @@ public class Menu extends JFrame {
     private javax.swing.JButton btnListarProductos;
     private javax.swing.JButton btnListarVendedores;
     private javax.swing.JButton btnModificarCliente;
-    private javax.swing.JButton btnModificarFactura;
     private javax.swing.JButton btnModificarProducto;
     private javax.swing.JButton btnModificarVendedor;
+    private javax.swing.JButton btnlistarFactura;
     private javax.swing.JPanel contentClientes;
     private javax.swing.JPanel contentFacturas;
     private javax.swing.JPanel contentMenu;
