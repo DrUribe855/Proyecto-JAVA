@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ADSO/Documents/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloFacturas/CrearFactura.java</file>
-            <file>file:/C:/Users/ADSO/Documents/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloUsuarios/ListarUsuarios.java</file>
-            <file>file:/C:/Users/ADSO/Documents/Proyecto-JAVA/21-FacturadorCompleto/src/Clases/DataBase.java</file>
-            <file>file:/C:/Users/ADSO/Documents/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloProductos/ListarProductos.java</file>
-            <file>file:/C:/Users/ADSO/Documents/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloFacturas/ListarFactura.java</file>
-            <file>file:/C:/Users/ADSO/Documents/Proyecto-JAVA/21-FacturadorCompleto/src/Principal/Menu.java</file>
-            <file>file:/C:/Users/ADSO/Documents/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloFacturas/Detalles.java</file>
+            <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/Principal/Menu.java</file>
+            <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloFacturas/ListarFactura.java</file>
+            <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/Clases/ListaFacturas.java</file>
+            <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/Clases/DataBase.java</file>
         </group>
     </open-files>
 </project-private>

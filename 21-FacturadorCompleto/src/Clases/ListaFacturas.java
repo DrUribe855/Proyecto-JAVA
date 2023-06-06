@@ -1,38 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Clases;
 
 public class ListaFacturas {
 
-    private String cedula_cliente;
+    private int cedula_cliente;
     private String nombre_cliente;
     private String direccion;
-    private String cedula_vendedor;
+    private int cedula_vendedor;
     private String nombre_vendedor;
-    private String id_producto;
+    private int id_producto;
     private String nombre_p;
-    private String cantidad;
+    private int cantidad;
+    private String fecha_actual;
     private int total;
 
-    public ListaFacturas(String cedula_cliente, String nombre_cliente, String direccion, String cedula_vendedor, String nombre_vendedor, String id_producto, String nombre_p, String cantidad, int total) {
+    public ListaFacturas(int cedula_cliente, int cedula_vendedor, int id_producto, String fecha_actual, int total) {
         this.cedula_cliente = cedula_cliente;
-        this.nombre_cliente = nombre_cliente;
-        this.direccion = direccion;
         this.cedula_vendedor = cedula_vendedor;
-        this.nombre_vendedor = nombre_vendedor;
         this.id_producto = id_producto;
-        this.nombre_p = nombre_p;
-        this.cantidad = cantidad;
+        this.fecha_actual = fecha_actual;
         this.total = total;
     }
 
-    public String getCedula_cliente() {
+    
+    
+    public int getCedula_cliente() {
         return cedula_cliente;
     }
 
-    public void setCedula_cliente(String cedula_cliente) {
+    public void setCedula_cliente(int cedula_cliente) {
         this.cedula_cliente = cedula_cliente;
     }
 
@@ -52,11 +48,11 @@ public class ListaFacturas {
         this.direccion = direccion;
     }
 
-    public String getCedula_vendedor() {
+    public int getCedula_vendedor() {
         return cedula_vendedor;
     }
 
-    public void setCedula_vendedor(String cedula_vendedor) {
+    public void setCedula_vendedor(int cedula_vendedor) {
         this.cedula_vendedor = cedula_vendedor;
     }
 
@@ -68,11 +64,11 @@ public class ListaFacturas {
         this.nombre_vendedor = nombre_vendedor;
     }
 
-    public String getId_producto() {
+    public int getId_producto() {
         return id_producto;
     }
 
-    public void setId_producto(String id_producto) {
+    public void setId_producto(int id_producto) {
         this.id_producto = id_producto;
     }
 
@@ -84,12 +80,20 @@ public class ListaFacturas {
         this.nombre_p = nombre_p;
     }
 
-    public String getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public String getFecha_actual() {
+        return fecha_actual;
+    }
+
+    public void setFecha_actual(String fecha_actual) {
+        this.fecha_actual = fecha_actual;
     }
 
     public int getTotal() {
@@ -99,5 +103,7 @@ public class ListaFacturas {
     public void setTotal(int total) {
         this.total = total;
     }
+
+    
 
 }

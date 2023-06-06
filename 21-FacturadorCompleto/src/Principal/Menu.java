@@ -29,7 +29,7 @@ public class Menu extends JFrame {
         this.indexClientes = 5;
         this.indexVendedores = 5;
 
-        this.listaClientes[0] = new Persona("108800", "Juan", "Perez", "300001", "Calle 20", "cliente01@mail.com");
+        /*this.listaClientes[0] = new Persona("108800", "Juan", "Perez", "300001", "Calle 20", "cliente01@mail.com");
         this.listaClientes[1] = new Persona("108801", "Manuel", "Molina", "300002", "Calle 21", "cliente02@mail.com");
         this.listaClientes[2] = new Persona("108802", "Jose", "Gonzalez", "300003", "Calle 22", "cliente03@mail.com");
         this.listaClientes[3] = new Persona("108803", "Ana", "Mendoza", "300004", "Calle 23", "cliente04@mail.com");
@@ -45,7 +45,7 @@ public class Menu extends JFrame {
         this.listaProductos[1] = new Producto(1011, "Arroz Lb", 2500);
         this.listaProductos[2] = new Producto(1012, "Arroz Kg", 4800);
         this.listaProductos[3] = new Producto(1013, "Detergente Lb", 4400);
-        this.listaProductos[4] = new Producto(1014, "Detergente Kg", 8000);
+        this.listaProductos[4] = new Producto(1014, "Detergente Kg", 8000);*/
 
         initComponents();
         initAlternComponents();
@@ -509,7 +509,7 @@ public class Menu extends JFrame {
 
     private void btnlistarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlistarFacturaActionPerformed
         setVisible(false);
-        ListarFactura ventana = new ListarFactura(this, this.facturas);
+        ListarFactura ventana = new ListarFactura(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnlistarFacturaActionPerformed
 

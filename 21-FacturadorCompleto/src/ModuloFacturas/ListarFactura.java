@@ -11,14 +11,13 @@ import javax.swing.border.EmptyBorder;
 public class ListarFactura extends javax.swing.JFrame {
 
     Menu ventanaMenu;
-    ListaFacturas facturas[];
     private JLabel etqTemporal;
     private JButton boton;
     private int posicion;
 
-    public ListarFactura(Menu ventanaMenu, ListaFacturas facturas[]) {
+    public ListarFactura(Menu ventanaMenu) {
         this.ventanaMenu = ventanaMenu;
-        this.facturas = facturas;
+
         initComponents();
         initAlternComponents();
 
@@ -145,13 +144,42 @@ public class ListarFactura extends javax.swing.JFrame {
 
     public void abrirVentana(int i) {
         setVisible(false);
-        Detalles ventana = new Detalles(this,i);
+        Detalles ventana = new Detalles(this, i);
         ventana.setVisible(true);
         this.setVisible(false);
     }
 
     public void imprimirProductos() {
-        for (int i = 0; i < this.facturas.length; i++) {
+        ListaFacturas facturas[] = (this.ventanaMenu.database.listaFacturas());
+        if (facturas != null) {
+            for (int i = 0; i < facturas.length; i++) {
+                if (facturas[i] != null) {
+                    etqTemporal = new JLabel(facturas[i].getCedula_cliente() + " - " + facturas[i].getCedula_vendedor() + " " + facturas[i].getTotal());
+                    etqTemporal.setFont(new Font("Arial", Font.PLAIN, 12));
+                    etqTemporal.setBorder(new EmptyBorder(2, 10, 2, 10));
+                    listaFactura.add(etqTemporal);
+                    //agreamos el boton de detalles para mostrarle todo
+                    
+                    
+                    JPopupMenu.Separator separador = new JPopupMenu.Separator();
+                    listaFactura.add(separador);
+                } else {
+                    break;
+                }
+            }
+            revalidate();
+        }
+    }
+
+    public void setLocal(int posicion) {
+        this.posicion = posicion;
+    }
+
+    public int getLocal() {
+        return posicion;
+    }
+    /*
+    for (int i = 0; i < this.facturas.length; i++) {
             if (this.facturas[i] != null) {
                 JPopupMenu.Separator separador = new JPopupMenu.Separator();
                 listaFactura.add(separador);
@@ -176,16 +204,7 @@ public class ListarFactura extends javax.swing.JFrame {
 
             }
         }
-        revalidate();
-    }
-
-    public void setLocal(int posicion) {
-        this.posicion = posicion;
-    }
-
-    public int getLocal() {
-        return posicion;
-    }
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_atras;
     private javax.swing.JLabel jLabel1;
