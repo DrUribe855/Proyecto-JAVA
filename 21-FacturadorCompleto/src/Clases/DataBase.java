@@ -226,4 +226,30 @@ public class DataBase {
         }
     }
     
+    public boolean eliminarProducto(int id){
+        try {
+            String consulta = "DELETE FROM productos WHERE id = '"+id+"' ";
+            int resp_consulta = this.manipularDB.executeUpdate(consulta);
+            if(resp_consulta > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error delete --> " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public ResultSet listarProductos(){
+        try {
+            ResultSet registros = this.manipularDB.executeQuery("SELECT * FROM productos");
+            registros.next();
+            return registros;
+        } catch (SQLException e) {
+            System.out.println("Error en SELECT --> " + e.getMessage());
+            return null;
+        }
+    }
+    
 }
