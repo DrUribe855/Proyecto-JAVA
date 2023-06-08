@@ -144,7 +144,7 @@ public class ListarFactura extends javax.swing.JFrame {
 
     public void abrirVentana(int i) {
         setVisible(false);
-        Detalles ventana = new Detalles(this, i);
+        Detalles ventana = new Detalles(this, i,this.ventanaMenu);
         ventana.setVisible(true);
         this.setVisible(false);
     }
@@ -159,8 +159,21 @@ public class ListarFactura extends javax.swing.JFrame {
                     etqTemporal.setBorder(new EmptyBorder(2, 10, 2, 10));
                     listaFactura.add(etqTemporal);
                     //agreamos el boton de detalles para mostrarle todo
-                    
-                    
+                    boton = new JButton("Ver detalle");
+                    listaFactura.add(boton);
+
+                    int lugar = i;
+                    ActionListener verDetalle = new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            
+                            abrirVentana(lugar);
+                        }
+                    };
+                    if (facturas[i] != null) {
+                        boton.addActionListener(verDetalle);
+
+                    }
+
                     JPopupMenu.Separator separador = new JPopupMenu.Separator();
                     listaFactura.add(separador);
                 } else {
