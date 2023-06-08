@@ -14,9 +14,14 @@ import Principal.Menu;
 
 public class CrearFactura extends JFrame {
 
+    ItemTemporal listaProductos[];
+    int indiceProductos;
+
     // Metodos
     public CrearFactura(Menu ventanaMenu, Persona[] listaClientes, Persona[] listaVendedores, Producto[] listaProductos, ListaFacturas facturas[]) {
         this.ventanaMenu = ventanaMenu;
+        this.listaProductos = new ItemTemporal[100];
+        this.indiceProductos = 0;
         /*this.listaClientes = listaClientes;
         this.listaVendedores = listaVendedores;
         this.listaProductos = listaProductos;
@@ -580,7 +585,6 @@ public class CrearFactura extends JFrame {
         String identificador = input_id_producto.getText();
         // hacemos lo mismo con los productos busqueda de productos
         Producto producto_temporal = (this.ventanaMenu.database.consultarProducto(identificador));
-        
 
         if (producto_temporal == null) {
             this.input_nombre_producto.setText("");
@@ -599,23 +603,29 @@ public class CrearFactura extends JFrame {
     public void AgregarProducto() {
 
         String identificador = input_id_producto.getText();
-        int id=Integer.parseInt(identificador);
-        int valorProducto = 0;
-         Producto producto_temporal = (this.ventanaMenu.database.consultarProducto(identificador));
-        if (!this.input_cant_producto.getText().equals("") && producto_temporal.getId()==id ) {
+        String cantidad = this.input_cant_producto.getText();
+
+        Producto producto_temporal = (this.ventanaMenu.database.consultarProducto(identificador));
+        if (!identificador.equals("") && !cantidad.equals("") && producto_temporal != null) {
+
+            int id = Integer.parseInt(identificador);
+            int cant = Integer.parseInt(cantidad);
+            int valorProducto = producto_temporal.getPrecio() * cant;
             
-            int cantidad = Integer.parseInt(this.input_cant_producto.getText());
-            valorProducto = producto_temporal.getPrecio() * cantidad;
-            etq_temporal = new JLabel(producto_temporal.getId() + " --- " + producto_temporal.getNombre() + " --" + valorProducto + "");
+            //codigo para crear el item temporal 
+            this.listaProductos[this.indiceProductos]=new ItemTemporal(identificador, cantidad, String.valueOf(valorProducto));
+            this.indiceProductos++;
+            
+            etq_temporal = new JLabel(identificador + " --- " + producto_temporal.getNombre() + " --" + valorProducto + "");
             Factura.add(etq_temporal);
-            //etq_resultado.setText(etq_resultado.getText() + "\n\n" + this.listaProductos[i].getId() + " --- "+ this.listaProductos[i].getNombre() + " --" + valorProducto + "  \n\n");
-            // agregamo el valor final de todos los productos comprados
             revalidate();
-           
+
+            totalPagar = totalPagar + valorProducto;
+            System.out.print(totalPagar);
+            etq_total.setText("TOTAL: $ " + Integer.toString(totalPagar));
+        } else {
+            Alert alerta = new Alert("NO EXISTE", "El producto no existe.", "error");
         }
-        totalPagar = totalPagar + valorProducto;
-        System.out.print(totalPagar);
-        etq_total.setText("TOTAL: $ " + Integer.toString(totalPagar));
 
     }
 
@@ -635,13 +645,7 @@ public class CrearFactura extends JFrame {
         if (!input_cedula_cliente.getText().equalsIgnoreCase("") && !input_nombres_cliente.getText().equalsIgnoreCase("") && !input_direccion_cliente.getText().equalsIgnoreCase("") && !input_cedula_vendedor.getText().equalsIgnoreCase("") && !this.input_nombres_vendedor.getText().equalsIgnoreCase("") && !input_id_producto.getText().equalsIgnoreCase("") && !input_nombre_producto.getText().equalsIgnoreCase("") && !input_cant_producto.getText().equalsIgnoreCase("")) {
             System.out.println("Todos los input estan llenos ");
             String cc_cliente = this.input_cedula_cliente.getText();
-            String nombre_cliente = this.input_nombres_cliente.getText();
-            String direccion_cliente = this.input_direccion_cliente.getText();
             String cc_vendedor = this.input_cedula_vendedor.getText();
-            String nombre_vendedor = this.input_nombres_vendedor.getText();
-            String identificador = this.input_id_producto.getText();
-            String nombre_producto = this.input_nombre_producto.getText();
-            String cantidad = this.input_cant_producto.getText();
             int total = this.totalPagar;
             // obtenemos la fecha de la factura
             Date fechaHoraActual = new Date();
@@ -661,7 +665,13 @@ public class CrearFactura extends JFrame {
 
             boolean registro = (this.ventanaMenu.database.insertarFactura(cedula_c, cedula_v, fechaHoraString, total));
             System.out.println("Datos De la factura Guardados con exito");
-
+            // extraer el id de la factura recien creada 
+            String idFactura=this.ventanaMenu.database.getIdFactura(cedula_c, cedula_v, fechaHoraString, total);
+            // extraer los productos y cantidades seleccionadas 
+            for (int i = 0; i < this.indiceProductos; i++) {
+                // insertar en la base de datos el items de la factura
+                this.ventanaMenu.database.insertarItemFactura(idFactura, this.listaProductos[i].getId_producto(), this.listaProductos[i].getCantidad(), this.listaProductos[i].getSubtotal());
+            }
             this.ventanaMenu.setVisible(true);
             this.dispose();
         } else {
@@ -673,7 +683,7 @@ public class CrearFactura extends JFrame {
     private JLabel etq_temporal;
     private JPanel Factura;
     private int totalPagar = 0;
-   
+
     private JLabel etq_datos_cliente;
     private JLabel etq_cedula_cliente;
     private JLabel etq_nombres_cliente;

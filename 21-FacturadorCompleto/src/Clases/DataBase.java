@@ -198,6 +198,37 @@ public class DataBase {
             return false;
         }
     }
+    
+    public boolean insertarItemFactura(String idFactura, String idProducto, String cantidad, String subtotal){
+        String consulta= "INSERT INTO items_factura(id_factura,id_producto,cantidad,subtotal) VALUES ('"+idFactura +"','"+idProducto+"','"+cantidad +"','"+subtotal+"')";
+        try{
+           int respuesta=manipularDB.executeUpdate(consulta);
+           if(respuesta>0){
+               System.out.println("REGISTRO DE ITEM CON EXITO");
+               return true;
+           }else{
+               return false;
+           }
+        }catch(SQLException e){
+            System.out.println("ERROR AL INSERTAR:"+ e.getMessage());
+            return false;
+        }
+    }
+    
+    public String getIdFactura(int cedula_cliente, int cedula_vendedor,String fecha,int total){
+        try{
+            ResultSet registros = this.manipularDB.executeQuery("SELECT * FROM facturas WHERE cedula_cliente='"+cedula_cliente+"' AND cedula_vendedor='"+cedula_vendedor+"' AND fecha='"+fecha+"' AND total='"+total+"' ");
+            registros.next();
+            if (registros.getRow()==1) {
+                return registros.getString("id");
+            }
+            return null;
+        }catch(SQLException e){
+            System.out.println("Error en SELECT: "+e.getMessage());
+            return null;
+        }
+    }
+    
     // registrar producto xd
     public boolean registrarProducto(int id, String nombre, int precio){
         String consulta = "INSERT into productos(id, nombre, precio) values ('"+id+"','"+nombre+"','"+precio+"')";
