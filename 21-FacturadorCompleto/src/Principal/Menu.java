@@ -8,6 +8,7 @@ import Clases.Persona;
 import Clases.Producto;
 import ModuloFacturas.CrearFactura;
 import ModuloProductos.CrearProducto;
+import ModuloProductos.EliminarProducto;
 import ModuloProductos.ListarProductos;
 import ModuloProductos.ModificarProductos;
 import ModuloUsuarios.EliminarUsuario;
@@ -300,6 +301,11 @@ public class Menu extends JFrame {
         btnEliminarProducto.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarProducto.setText("Eliminar");
         btnEliminarProducto.setFocusable(false);
+        btnEliminarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarProductoActionPerformed(evt);
+            }
+        });
 
         btnListarProductos.setBackground(new java.awt.Color(0, 0, 153));
         btnListarProductos.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
@@ -535,6 +541,12 @@ public class Menu extends JFrame {
         EliminarUsuario ventana = new EliminarUsuario(this,"VENDEDORES");
         ventana.setVisible(true);
     }//GEN-LAST:event_btnEliminarVendedorActionPerformed
+
+    private void btnEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProductoActionPerformed
+       setVisible(false);
+       EliminarProducto ventana = new EliminarProducto(this);
+       ventana.setVisible(true);
+    }//GEN-LAST:event_btnEliminarProductoActionPerformed
     
     public void initAlternComponents(){
         setLocationRelativeTo(null);

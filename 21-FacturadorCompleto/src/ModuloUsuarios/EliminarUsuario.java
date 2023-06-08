@@ -440,14 +440,12 @@ public class EliminarUsuario extends javax.swing.JFrame {
     private javax.swing.JTextField campoNombres;
     private javax.swing.JTextField campoTelefono;
     private javax.swing.JPanel contentPrincipal;
-    private javax.swing.JPanel contentTitulo;
     private javax.swing.JLabel etqApellidos;
     private javax.swing.JLabel etqCedula;
     private javax.swing.JLabel etqDireccion;
     private javax.swing.JLabel etqEmail;
     private javax.swing.JLabel etqNombres;
     private javax.swing.JLabel etqTelefono;
-    private javax.swing.JLabel etqTitulo;
     private javax.swing.JLabel etqTitulo1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

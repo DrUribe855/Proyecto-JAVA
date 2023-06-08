@@ -200,4 +200,58 @@ public class DataBase {
         }
     }
     
+    public boolean modificarProducto(int id, String nombre, int precio){
+        try {
+            String consulta = "UPDATE productos SET nombre = '"+nombre+"',precio = '"+precio+"' WHERE id = '"+id+"' ";
+            int resp_consulta = manipularDB.executeUpdate(consulta);
+            if(resp_consulta > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("--> Error update --> " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public ResultSet buscarProducto(int id){
+        try {
+            ResultSet productos = this.manipularDB.executeQuery("SELECT * FROM productos WHERE id = '"+id+"'");
+            if(productos != null){
+                productos.next();
+            }
+            return productos;
+        } catch (SQLException e) {
+            System.out.print("Error en busqueda --> " + e.getMessage());
+            return null;
+        }
+    }
+    
+    public boolean eliminarProducto(int id){
+        try {
+            String consulta = "DELETE FROM productos WHERE id = '"+id+"' ";
+            int resp_consulta = this.manipularDB.executeUpdate(consulta);
+            if(resp_consulta > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error delete --> " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public ResultSet listarProductos(){
+        try {
+            ResultSet registros = this.manipularDB.executeQuery("SELECT * FROM productos");
+            registros.next();
+            return registros;
+        } catch (SQLException e) {
+            System.out.println("Error en SELECT --> " + e.getMessage());
+            return null;
+        }
+    }
+    
 }
