@@ -2,7 +2,10 @@ package ModuloProductos;
 
 import Principal.Menu;
 import java.awt.Color;
+import java.awt.Font;
 import javax.swing.*;
+import java.sql.*;
+import javax.swing.border.EmptyBorder;
 
 public class ListarProductos extends javax.swing.JFrame {
     
@@ -26,17 +29,25 @@ public class ListarProductos extends javax.swing.JFrame {
     }
     
     public void imprimirClientes(){
-        /* for(int i = 0; i < this.listaPersonas.length; i++){
-            if(this.listaPersonas[i] != null){
-                etqTemporal = new JLabel(i + " " + this.listaPersonas[i].getCedula()+" - "+this.listaPersonas[i].getNombres()+" "+this.listaPersonas[i].getApellidos());
-                etqTemporal.setFont(new Font("Arial", Font.PLAIN, 12));
-                etqTemporal.setBorder(new EmptyBorder(2,10,2,10));
-                contenUsuarios.add(etqTemporal);
+       
+        try {
+            ResultSet registros  = this.ventanaMenu.database.listarProductos();
+            if(registros.getRow()==1){
+                do{
+                    etqTemporal = new JLabel(registros.getRow() + " " + registros.getString("nombre") + " - " + registros.getString("precio"));
+                    etqTemporal.setFont(new Font("Arial", Font.PLAIN, 12));
+                    etqTemporal.setBorder(new EmptyBorder (2,10,2,10));
+                    contenUsuarios.add(etqTemporal);
+                    JPopupMenu.Separator separador = new JPopupMenu.Separator();
+                    contenUsuarios.add(separador);
+                }while(registros.next());
             }else{
-                break;
+                System.out.println("No existen personas");
             }
+        } catch (Exception e) {
+            
+            System.out.println("Error al extrar datos: " + e.getMessage());
         }
-        */
         revalidate();
     }
     
