@@ -3,10 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/Principal/Menu.java</file>
             <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloFacturas/ListarFactura.java</file>
             <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/ModuloFacturas/Detalles.java</file>
             <file>file:/C:/Users/cuent/OneDrive/Documentos/Proyecto-JAVA/21-FacturadorCompleto/src/Clases/DataBase.java</file>
+=======
+            <file>file:/C:/Users/instructor/Documents/Proyecto%20-%20JAVA/21-FacturadorCompleto/src/Clases/DataBase.java</file>
+            <file>file:/C:/Users/instructor/Documents/Proyecto%20-%20JAVA/21-FacturadorCompleto/src/ModuloUsuarios/EliminarUsuario.java</file>
+            <file>file:/C:/Users/instructor/Documents/Proyecto%20-%20JAVA/21-FacturadorCompleto/src/ModuloProductos/ModificarProductos.java</file>
+>>>>>>> origin/Dr.Uribe
         </group>
     </open-files>
 </project-private>

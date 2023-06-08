@@ -198,17 +198,18 @@ public class CrearProducto extends javax.swing.JFrame {
         String precio = campoPrecio.getText();
         
         if (!codigo.equals("") && !nombre.equals("") && !precio.equals("")) {
-            boolean repetido = false;
-            if (!repetido) {
-                //Producto temporal = new Producto( Integer.valueOf(codigo) , nombre, Integer.valueOf(precio));
-                // 
-                
-                this.ventanaMenu.setVisible(true);
-                this.ventanaMenu.alertCreacionUsuario();
-                dispose();
-            }else{
-                Alert alerta = new Alert("CODIGO", "El codigo ingresado se encuentra repetido.", "error");
-            }
+                boolean respuesta = this.ventanaMenu.database.registrarProducto(Integer.valueOf(codigo) , nombre, Integer.valueOf(precio));
+                if(respuesta){
+                    dispose();
+                    this.ventanaMenu.setVisible(true);
+                    this.ventanaMenu.alertCreacionUsuario();
+                }else{
+                    Alert alerta = new Alert("Código existente","El código ya se encuentra registrado en la base de datos","error");
+                    this.campoId.setText("");
+                    validarInput(campoId);
+                    campoId.requestFocus();
+                    
+                }
         }else{
             Alert alerta = new Alert("Datos Inválidos", "Todos los campos son obligatorios.", "error");
             validarTodosInputs();

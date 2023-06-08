@@ -2,6 +2,7 @@
 package ModuloProductos;
 
 import Clases.Persona;
+import Clases.Producto;
 import Principal.Alert;
 import Principal.Menu;
 import java.awt.Color;
@@ -10,6 +11,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import java.sql.*;
 
 public class ModificarProductos extends javax.swing.JFrame {
     
@@ -36,7 +38,7 @@ public class ModificarProductos extends javax.swing.JFrame {
         etqPrecio = new javax.swing.JLabel();
         campoPrecio = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
-        btnRegistrar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
@@ -114,15 +116,14 @@ public class ModificarProductos extends javax.swing.JFrame {
             }
         });
 
-        btnRegistrar.setBackground(new java.awt.Color(0, 0, 153));
-        btnRegistrar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegistrar.setText("MODIFICAR");
-        btnRegistrar.setEnabled(false);
-        btnRegistrar.setFocusable(false);
-        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar.setBackground(new java.awt.Color(0, 0, 153));
+        btnModificar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificar.setText("MODIFICAR");
+        btnModificar.setFocusable(false);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
 
@@ -177,7 +178,7 @@ public class ModificarProductos extends javax.swing.JFrame {
                 .addGap(80, 80, 80)
                 .addComponent(btnCancelar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRegistrar)
+                .addComponent(btnModificar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         contentPrincipalLayout.setVerticalGroup(
@@ -202,7 +203,7 @@ public class ModificarProductos extends javax.swing.JFrame {
                     .addComponent(campoPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(contentPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40))
         );
@@ -232,38 +233,42 @@ public class ModificarProductos extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String codigo = campoId.getText();
-        Persona temporal = null;
-        
-        if (temporal != null) {
-            habilitarCampo(campoNombre);
-            habilitarCampo(campoPrecio);
-            campoNombre.setText(temporal.getNombres());
-            campoPrecio.setText(temporal.getApellidos());
-            campoNombre.requestFocus();
-            btnRegistrar.setEnabled(true);
-        }else{
-            Alert alerta = new Alert("NO EXISTE", "La cedula no esta registrada.", "error");
-            campoNombre.setText("");
-            campoPrecio.setText("");
-            deshabilitarCampo(campoNombre);
-            deshabilitarCampo(campoPrecio);
-            campoId.requestFocus();
-            btnRegistrar.setEnabled(false);
+        if(!codigo.equals("")){
+            try {
+                ResultSet productos = this.ventanaMenu.database.buscarProducto(Integer.valueOf(codigo));
+                if(productos!=null && productos.getRow()==1){
+                    System.out.println("test");
+                    this.campoNombre.setText(productos.getString("nombre"));
+                    this.campoPrecio.setText(productos.getString("precio"));
+                    habilitarCampo(campoNombre);
+                    habilitarCampo(campoPrecio);
+                    btnModificar.setEnabled(true);
+                }else{
+                    Alert alerta = new Alert("ERROR","El usuario no fue encontrado","error");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al extraer información producto --> " + e.getMessage());
+                System.out.println("Error al extraer información producto --> " + e.toString());
+            }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         String codigo = campoId.getText();
         String nombre = campoNombre.getText();
         String precio = campoPrecio.getText();
         
         if (!codigo.equals("") && !nombre.equals("") && !precio.equals("")) {
+            this.ventanaMenu.database.modificarProducto(Integer.valueOf(codigo), nombre, Integer.valueOf(precio));
+            dispose();
+            this.ventanaMenu.setVisible(true);
             Alert alerta = new Alert("EXITO", "Datos editados correctamente.", "success");
         }else{
             Alert alerta = new Alert("Datos Inválidos", "Todos los campos son obligatorios.", "error");
-            validarTodosInputs();
+            //validarTodosInputs();
+            
         }
-    }//GEN-LAST:event_btnRegistrarActionPerformed
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     private void eventoKeyCampos(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eventoKeyCampos
         JTextField campo = (JTextField) evt.getSource();
@@ -277,7 +282,7 @@ public class ModificarProductos extends javax.swing.JFrame {
         deshabilitarCampo(campoNombre);
         deshabilitarCampo(campoPrecio);
         campoId.requestFocus();
-        btnRegistrar.setEnabled(false);
+        btnModificar.setEnabled(false);
     }//GEN-LAST:event_eventoKeyCedula
 
     public void deshabilitarCampo(JTextField campo){
@@ -294,10 +299,10 @@ public class ModificarProductos extends javax.swing.JFrame {
     
     public void initAlternComponents(){
         setLocationRelativeTo(null);
+        btnModificar.setEnabled(false);
         setIconImage( getToolkit().createImage( ClassLoader.getSystemResource("imagenes/icono_almacenes.png") ) );
         
-        deshabilitarCampo(campoNombre);
-        deshabilitarCampo(campoPrecio);
+        
     }
     
     public void validarTodosInputs(){
@@ -322,7 +327,7 @@ public class ModificarProductos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JTextField campoId;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoPrecio;
