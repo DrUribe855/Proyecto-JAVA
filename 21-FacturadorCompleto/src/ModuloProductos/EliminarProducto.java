@@ -17,9 +17,9 @@ public class EliminarProducto extends javax.swing.JFrame {
     Menu ventanaMenu;
   
     public EliminarProducto(Menu ventanaMenu) {
-        
         this.ventanaMenu = ventanaMenu;
         initComponents();
+        setLocationRelativeTo(null);
     }
     
      public void deshabilitarCampo(JTextField campo){

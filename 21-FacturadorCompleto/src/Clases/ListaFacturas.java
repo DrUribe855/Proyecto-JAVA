@@ -13,17 +13,24 @@ public class ListaFacturas {
     private int cantidad;
     private String fecha_actual;
     private int total;
+    private int id;
 
-    public ListaFacturas(int cedula_cliente, int cedula_vendedor, int id_producto, String fecha_actual, int total) {
+    public ListaFacturas(int cedula_cliente, int cedula_vendedor, int id_producto, String fecha_actual, int total,int id) {
         this.cedula_cliente = cedula_cliente;
         this.cedula_vendedor = cedula_vendedor;
         this.id_producto = id_producto;
         this.fecha_actual = fecha_actual;
         this.total = total;
+        this.id=id;
     }
 
-    
-    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public int getCedula_cliente() {
         return cedula_cliente;
     }

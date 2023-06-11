@@ -1,4 +1,3 @@
-
 package ModuloUsuarios;
 
 import Clases.Persona;
@@ -11,54 +10,55 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-
 public class EliminarUsuario extends javax.swing.JFrame {
-    
+
     Menu ventanaMenu;
     String titulo;
-   
+
     public EliminarUsuario(Menu ventanaMenu, String titulo) {
-        
+
         this.ventanaMenu = ventanaMenu;
         this.titulo = titulo;
         initComponents();
         initAlternComponents();
     }
-    
-    public void initAlternComponents(){
+
+    public void initAlternComponents() {
+        setLocationRelativeTo(null);
+        this.etqTitulo1.setText("ELMINAR " + this.titulo);
         deshabilitarCampo(campoNombres);
         deshabilitarCampo(campoApellidos);
         deshabilitarCampo(campoTelefono);
         deshabilitarCampo(campoDireccion);
         deshabilitarCampo(campoEmail);
     }
-    
-    public void deshabilitarCampo(JTextField campo){
+
+    public void deshabilitarCampo(JTextField campo) {
         JTextField referencia = new JTextField();
-        campo.setBorder( referencia.getBorder() );
+        campo.setBorder(referencia.getBorder());
         campo.setEnabled(false);
-        campo.setBackground(Color.GRAY );
+        campo.setBackground(Color.GRAY);
     }
-    
-    public void validarInput(JTextField campo){
+
+    public void validarInput(JTextField campo) {
         if (campo.getText().equals("")) {
             Border borderColor = new LineBorder(Color.RED, 1, true);
-            Border borderPadding = new EmptyBorder(2,5,2,5);
+            Border borderPadding = new EmptyBorder(2, 5, 2, 5);
             Border borderRojo = new CompoundBorder(borderColor, borderPadding);
             campo.setBorder(borderRojo);
             campo.requestFocus();
-        }else{
+        } else {
             JTextField referencia = new JTextField();
-            campo.setBorder( referencia.getBorder() );
+            campo.setBorder(referencia.getBorder());
         }
     }
-    
-    public void habilitarCampo(JTextField campo){
+
+    public void habilitarCampo(JTextField campo) {
         campo.setEnabled(true);
-        campo.setBackground(Color.WHITE );
+        campo.setBackground(Color.WHITE);
     }
-    
-     public void validarTodosInputs(){
+
+    public void validarTodosInputs() {
         validarInput(campoEmail);
         validarInput(campoDireccion);
         validarInput(campoTelefono);
@@ -390,12 +390,12 @@ public class EliminarUsuario extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         String cedula = campoCedula.getText();
         if (!cedula.equals("")) {
-            boolean proceso = (this.titulo.equalsIgnoreCase("CLIENTES"))? this.ventanaMenu.database.eliminarUsuario(cedula,"clientes") : this.ventanaMenu.database.eliminarUsuario(cedula, "vendedores");
-            if(proceso){
+            boolean proceso = (this.titulo.equalsIgnoreCase("CLIENTES")) ? this.ventanaMenu.database.eliminarUsuario(cedula, "clientes") : this.ventanaMenu.database.eliminarUsuario(cedula, "vendedores");
+            if (proceso) {
                 dispose();
                 this.ventanaMenu.setVisible(true);
-                Alert alerta = new Alert ("VALIDADO","El usuario ha sido eliminado con exito","success");   
-            }else{
+                Alert alerta = new Alert("VALIDADO", "El usuario ha sido eliminado con exito", "success");
+            } else {
                 System.out.print("error");
             }
         }
@@ -403,11 +403,11 @@ public class EliminarUsuario extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String cedula = campoCedula.getText();
-       
 
         if (!cedula.equals("")) {
-            Persona temporal = (this.titulo.equals("CLIENTES") ? this.ventanaMenu.database.buscarCliente(cedula): this.ventanaMenu.database.buscarVendedor(cedula));
-            if(temporal != null){
+            Persona temporal = (this.titulo.equals("CLIENTES") ? this.ventanaMenu.database.buscarCliente(cedula) : this.ventanaMenu.database.buscarVendedor(cedula));
+            if (temporal != null) {
+
                 campoNombres.setText(temporal.getNombres());
                 campoApellidos.setText(temporal.getApellidos());
                 campoTelefono.setText(temporal.getTelefono());
@@ -415,18 +415,16 @@ public class EliminarUsuario extends javax.swing.JFrame {
                 campoEmail.setText(temporal.getEmail());
                 campoNombres.requestFocus();
                 btnEliminar.setEnabled(true);
-            }else{
+            } else {
                 Alert alerta = new Alert("NO EXISTE", "La cedula no esta registrada.", "error");
                 btnEliminar.setEnabled(false);
-        }
-            
-            
+            }
+
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-
     public static void main(String args[]) {
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

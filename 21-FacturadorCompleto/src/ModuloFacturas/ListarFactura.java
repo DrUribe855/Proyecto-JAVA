@@ -144,9 +144,11 @@ public class ListarFactura extends javax.swing.JFrame {
 
     public void abrirVentana(int i) {
         setVisible(false);
+        
         Detalles ventana = new Detalles(this, i,this.ventanaMenu);
         ventana.setVisible(true);
         this.setVisible(false);
+        
     }
 
     public void imprimirProductos() {
@@ -156,7 +158,7 @@ public class ListarFactura extends javax.swing.JFrame {
                 if (facturas[i] != null) {
                     etqTemporal = new JLabel(facturas[i].getCedula_cliente() + " - " + facturas[i].getCedula_vendedor() + " " + facturas[i].getTotal());
                     etqTemporal.setFont(new Font("Arial", Font.PLAIN, 12));
-                    etqTemporal.setBorder(new EmptyBorder(2, 10, 2, 10));
+                    etqTemporal.setBorder(new EmptyBorder(1, 5, 2, 5));
                     listaFactura.add(etqTemporal);
                     //agreamos el boton de detalles para mostrarle todo
                     boton = new JButton("Ver detalle");
