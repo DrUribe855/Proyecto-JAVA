@@ -25,7 +25,7 @@ public class EliminarUsuario extends javax.swing.JFrame {
 
     public void initAlternComponents() {
         setLocationRelativeTo(null);
-        this.etqTitulo1.setText("ELMINAR " + this.titulo);
+        this.etqTitulo1.setText("ELIMINAR " + this.titulo);
         deshabilitarCampo(campoNombres);
         deshabilitarCampo(campoApellidos);
         deshabilitarCampo(campoTelefono);
@@ -91,7 +91,7 @@ public class EliminarUsuario extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         etqTitulo1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         contentPrincipal.setBackground(new java.awt.Color(153, 153, 255));
 

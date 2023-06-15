@@ -19,6 +19,7 @@ public class EliminarProducto extends javax.swing.JFrame {
     public EliminarProducto(Menu ventanaMenu) {
         this.ventanaMenu = ventanaMenu;
         initComponents();
+        initAlternComponents();
         setLocationRelativeTo(null);
     }
     
@@ -46,6 +47,12 @@ public class EliminarProducto extends javax.swing.JFrame {
         campo.setEnabled(true);
         campo.setBackground(Color.WHITE );
     }
+     
+     public void initAlternComponents(){
+        deshabilitarCampo(this.campoNombre);
+        deshabilitarCampo(this.campoPrecio);
+        btnEliminar.setEnabled(false);
+     }
 
    
     @SuppressWarnings("unchecked")
@@ -67,7 +74,7 @@ public class EliminarProducto extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         etqTitulo1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         contentPrincipal.setBackground(new java.awt.Color(153, 153, 255));
 
@@ -139,6 +146,11 @@ public class EliminarProducto extends javax.swing.JFrame {
 
         campoPrecio.setText(" ");
         campoPrecio.setToolTipText("");
+        campoPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoPrecioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout contentPrincipalLayout = new javax.swing.GroupLayout(contentPrincipal);
         contentPrincipal.setLayout(contentPrincipalLayout);
@@ -248,7 +260,7 @@ public class EliminarProducto extends javax.swing.JFrame {
         
         deshabilitarCampo(campoNombre);
         campoCodigo.requestFocus();
-        btnEliminar.setEnabled(true);
+        btnEliminar.setEnabled(false);
     }//GEN-LAST:event_campoCodigoeventoKeyCedula
 
     private void campoNombreeventoKeyCampos(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreeventoKeyCampos
@@ -287,6 +299,7 @@ public class EliminarProducto extends javax.swing.JFrame {
                     this.campoPrecio.setText(productos.getString("precio"));
                     habilitarCampo(campoNombre);
                     habilitarCampo(campoPrecio);
+                    btnEliminar.setEnabled(true);
                 }else{
                     Alert alerta = new Alert("ERROR","Todos los campos deben estar validados","error");
                 }
@@ -295,6 +308,10 @@ public class EliminarProducto extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void campoPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoPrecioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoPrecioActionPerformed
 
     
     public static void main(String args[]) {

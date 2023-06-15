@@ -47,6 +47,9 @@ public class Detalles extends javax.swing.JFrame {
             // fecha de la factura 
             this.fecha.setText(factura[this.ubicacion].getFecha_actual());
             System.out.println(factura[this.ubicacion].getId() + " Esta es la ubicacion en la cual nos encontramos");
+            
+            
+            
             try {
                 ResultSet ItemsFactura = this.ventanaMenu.database.consultarItemsFactura(factura[this.ubicacion].getId());
                 if (ItemsFactura != null && ItemsFactura.getRow() == 1) {
