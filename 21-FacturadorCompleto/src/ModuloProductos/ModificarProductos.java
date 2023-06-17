@@ -233,22 +233,22 @@ public class ModificarProductos extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String codigo = campoId.getText();
-        String nombre = campoNombre.getText();
-        String precio = campoPrecio.getText();
         if(!codigo.equals("")){
             try {
                 ResultSet productos = this.ventanaMenu.database.buscarProducto(Integer.valueOf(codigo));
-                if(productos != null){
+                if(productos!=null && productos.getRow()==1){
                     System.out.println("test");
                     this.campoNombre.setText(productos.getString("nombre"));
                     this.campoPrecio.setText(productos.getString("precio"));
                     habilitarCampo(campoNombre);
                     habilitarCampo(campoPrecio);
+                    btnModificar.setEnabled(true);
                 }else{
                     Alert alerta = new Alert("ERROR","El usuario no fue encontrado","error");
                 }
             } catch (SQLException e) {
-                System.out.println("Error al extraer información --> " + e.getMessage());
+                System.out.println("Error al extraer información producto --> " + e.getMessage());
+                System.out.println("Error al extraer información producto --> " + e.toString());
             }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -282,7 +282,7 @@ public class ModificarProductos extends javax.swing.JFrame {
         deshabilitarCampo(campoNombre);
         deshabilitarCampo(campoPrecio);
         campoId.requestFocus();
-        btnModificar.setEnabled(true);
+        btnModificar.setEnabled(false);
     }//GEN-LAST:event_eventoKeyCedula
 
     public void deshabilitarCampo(JTextField campo){
