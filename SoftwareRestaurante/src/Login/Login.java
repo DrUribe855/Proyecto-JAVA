@@ -1,6 +1,7 @@
 
 package Login;
 
+import ModuloPlatos.PrincipalInterface;
 import java.awt.Color;
 
 public class Login extends javax.swing.JFrame {
@@ -53,11 +54,11 @@ public class Login extends javax.swing.JFrame {
         jEImagePanel2.setLayout(jEImagePanel2Layout);
         jEImagePanel2Layout.setHorizontalGroup(
             jEImagePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 29, Short.MAX_VALUE)
+            .addGap(0, 22, Short.MAX_VALUE)
         );
         jEImagePanel2Layout.setVerticalGroup(
             jEImagePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
+            .addGap(0, 22, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jEImagePanel1Layout = new javax.swing.GroupLayout(jEImagePanel1);
@@ -65,7 +66,7 @@ public class Login extends javax.swing.JFrame {
         jEImagePanel1Layout.setHorizontalGroup(
             jEImagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jEImagePanel1Layout.createSequentialGroup()
-                .addContainerGap(450, Short.MAX_VALUE)
+                .addContainerGap(457, Short.MAX_VALUE)
                 .addComponent(jEImagePanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -101,6 +102,15 @@ public class Login extends javax.swing.JFrame {
         jPanelRound2.setArch(30);
         jPanelRound2.setArcw(30);
         jPanelRound2.setOpaque(true);
+        jPanelRound2.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                loginButton(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -176,6 +186,12 @@ public class Login extends javax.swing.JFrame {
     private void jEImagePanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEImagePanel2MouseClicked
         System.exit(0);
     }//GEN-LAST:event_jEImagePanel2MouseClicked
+
+    private void loginButton(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_loginButton
+        setVisible(false);
+        PrincipalInterface window = new PrincipalInterface();
+        window.setVisible(true);
+    }//GEN-LAST:event_loginButton
 
     
     public static void main(String args[]) {
