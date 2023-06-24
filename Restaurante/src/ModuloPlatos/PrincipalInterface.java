@@ -4,6 +4,7 @@ package ModuloPlatos;
  
 import Clases.DataBase;
 import ModuloPlatos.Interfaces.MenuPlatos;
+import ModuloPlatos.Interfaces.ModificarMenu;
 import ModuloPlatos.Interfaces.RegistrarMenu;
 
 import javax.swing.JPanel;
@@ -154,17 +155,10 @@ public class PrincipalInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPlatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlatosActionPerformed
-       this.contentPrincipal.removeAll();
-       this.contentPrincipal.repaint();
-       
-       
-       MenuPlatos contenMenuPlatos = new MenuPlatos(this, database);
-       contenMenuPlatos.setSize( contentPrincipal.getSize() );
-       contentPrincipal.add(contenMenuPlatos);
-       revalidate();
+        cargarPanelPlatos();
     }//GEN-LAST:event_btnPlatosActionPerformed
     public void cargarPanelRegistrarMenu(){
-        this.contentPrincipal.removeAll();
+       this.contentPrincipal.removeAll();
        this.contentPrincipal.repaint();
        
        
@@ -172,6 +166,26 @@ public class PrincipalInterface extends javax.swing.JFrame {
        contenTemporal.setSize( contentPrincipal.getSize() );
        contentPrincipal.add(contenTemporal);
        revalidate();
+    }
+    
+    public void cargarPanelModificarMenu(){
+        this.contentPrincipal.removeAll();
+        this.contentPrincipal.repaint();
+        
+        ModificarMenu contenTemporal = new ModificarMenu(this, database);
+        contenTemporal.setSize(contentPrincipal.getSize());
+        contentPrincipal.add(contenTemporal);
+        revalidate();
+    }
+    
+    public void cargarPanelPlatos(){
+        this.contentPrincipal.removeAll();
+        this.contentPrincipal.repaint();
+        
+        MenuPlatos contenMenuPlatos = new MenuPlatos(this, database);
+        contenMenuPlatos.setSize(this.contentPrincipal.getSize());
+        contentPrincipal.add(contenMenuPlatos);
+        revalidate();
     }
     
     private void btnMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesasActionPerformed

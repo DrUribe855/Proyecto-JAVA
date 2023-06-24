@@ -40,5 +40,34 @@ public class DataBase {
             return false;
         }
     }
+    
+    public ResultSet buscarMenu(String codigo){
+        try {
+            ResultSet platos = this.manipularDB.executeQuery("SELECT * FROM platos WHERE codigo='"+codigo+"'");
+            if(platos != null){
+                platos.next();
+            }
+            return platos;
+        } catch (SQLException e) {
+            System.out.println("Error en busqueda: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    public boolean modificarMenu(String codigo, String nombre, double precio){
+        try {
+            String consulta = "UPDATE platos SET nombre='"+nombre+"', precio='"+precio+"' WHERE codigo='"+codigo+"'";
+            int resp = manipularDB.executeUpdate(consulta);
+            if(resp > 0){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en UPDATE: " + e.getMessage());
+            return false;
+        }
+    }
 
 }
+

@@ -39,6 +39,7 @@ public class MenuPlatos extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         btnRegistrar.setText("Registrar menú");
+        btnRegistrar.setFocusable(false);
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarActionPerformed(evt);
@@ -46,6 +47,7 @@ public class MenuPlatos extends javax.swing.JPanel {
         });
 
         btnModificar.setText("Modificar menú");
+        btnModificar.setFocusable(false);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
@@ -53,8 +55,10 @@ public class MenuPlatos extends javax.swing.JPanel {
         });
 
         btnEliminar.setText("Eliminar menú");
+        btnEliminar.setFocusable(false);
 
         btnConsultar.setText("Consultar menú");
+        btnConsultar.setFocusable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -129,8 +133,7 @@ public class MenuPlatos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        //this.contentPrincipal.removeAll();
-        //this.contentPrincipal.repaint();
+        this.principal.cargarPanelModificarMenu();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed

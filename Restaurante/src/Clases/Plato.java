@@ -36,4 +36,6 @@ public class Plato {
         this.precio = precio;
     }
 
+   
+
 }

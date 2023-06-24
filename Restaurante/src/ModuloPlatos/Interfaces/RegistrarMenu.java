@@ -137,7 +137,9 @@ public class RegistrarMenu extends javax.swing.JPanel {
         if(!codigo.equals("") && !nombre.equals("") && !precio.equals("")){
             boolean respuesta = this.database.registrarPlato(codigo, nombre, Double.parseDouble(precio));
             if(respuesta){
-                
+                this.principal.setVisible(true);
+                System.out.println("Producto registrado con éxito");
+                this.principal.cargarPanelPlatos();
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -154,4 +156,6 @@ public class RegistrarMenu extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    
 }
