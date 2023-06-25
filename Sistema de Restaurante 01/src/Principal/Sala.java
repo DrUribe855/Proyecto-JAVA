@@ -8,31 +8,37 @@ import Clases.*;
 
 public class Sala extends javax.swing.JFrame {
 
+    public Database database;
     private int cant_mesas = 12;
     private JLabel estado[];
     private JButton mesas[];
-    public Plato platos[];
+    //public Plato platos[];
     public MesaP pedidos_mesas[][];
 
     public Sala() {
+        // agregamos a base de datos 
+        this.database = new Database();
         // mostramos la opcion de minizar la ventan y el logo de a ventana 
-        this.platos = new Plato[10];
+        //this.platos = new Plato[10];
         initComponents();
         initAlterntComponents();
         this.pedidos_mesas = new MesaP[cant_mesas][100];
+        //agregamos la cantidad de mesas a la base de datos 
+        database.registrarMesas(cant_mesas);
 
         // agregamos platos para probrar el pedido de cada mesa
-        platos[0] = new Plato("Hamburguesa", 25000.0);
-        platos[1] = new Plato("Pizza", 22000.0);
-        platos[2] = new Plato("Ensalada", 18000.0);
-        platos[3] = new Plato("Sushi", 35000.0);
-        platos[4] = new Plato("Pasta", 28000.0);
-        platos[5] = new Plato("Tacos", 19000.0);
-        platos[6] = new Plato("Arroz con pollo", 20000.0);
-        platos[7] = new Plato("Ceviche", 24000.0);
-        platos[8] = new Plato("Sopa de lentejas", 15000.0);
-        platos[9] = new Plato("Empanadas", 12000.0);
-
+        /*
+        platos[0] = new Plato(1,"Hamburguesa", 25000.0);
+        platos[1] = new Plato(2,"Pizza", 22000.0);
+        platos[2] = new Plato(3,"Ensalada", 18000.0);
+        platos[3] = new Plato(4,"Sushi", 35000.0);
+        platos[4] = new Plato(5,"Pasta", 28000.0);
+        platos[5] = new Plato(6,"Tacos", 19000.0);
+        platos[6] = new Plato(7,"Arroz con pollo", 20000.0);
+        platos[7] = new Plato(8,"Ceviche", 24000.0);
+        platos[8] = new Plato(9,"Sopa de lentejas", 15000.0);
+        platos[9] = new Plato(10,"Empanadas", 12000.0);
+         */
     }
 
     public void initAlterntComponents() {
@@ -44,15 +50,32 @@ public class Sala extends javax.swing.JFrame {
         setLocationRelativeTo(null);
 
         agregarMesas();
+
     }
 
     // aqui abrimos la ventana del pediodo del cliente 
-    public void abrirVentanaPedido(int i) {
-        setVisible(false);
+    // y validamos si en esa posicion ya esta un pedido activo para cargar los datos de ese pedido en especifico 
+    public void abrirVentanaPedido(int numeroMesa) {
+        int idMesaPedidoActiva = this.database.obtenerIdMesaPedidoActiva(numeroMesa+1);
 
-        Pedidos ventana = new Pedidos(this, i);
-        ventana.setVisible(true);
+        if (idMesaPedidoActiva != -1) {
+            // Hay un pedido activo para la mesa, mostrar los datos
+            System.out.println("Entro aqui en la primera condicion"+numeroMesa);
+            setVisible(false);
 
+            Pedidos ventana = new Pedidos(this, numeroMesa);
+            ventana.setVisible(true);
+        } else {
+            // No hay un pedido activo para la mesa, crear uno nuevo
+            // Aquí puedes agregar el código para crear un nuevo pedido
+            // Puedes utilizar el número de mesa (numeroMesa) para inicializar el nuevo pedido
+            System.out.println("Entro aqui en la segunda condicion");
+            // Abrir la ventana de pedidos con el nuevo pedido
+            setVisible(false);
+
+            Pedidos ventana = new Pedidos(this, numeroMesa);
+            ventana.setVisible(true);
+        }
     }
 
     public void agregarMesas() {
@@ -79,7 +102,7 @@ public class Sala extends javax.swing.JFrame {
             // Cambiar el cursor al pasar el ratón sobre el botón
             mesas[i].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             // agregamo el evento a todos lo botones 
-            int numeroDeMesa = (i + 1);
+            int numeroDeMesa = i;
             ActionListener abrirPedido = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 
@@ -246,7 +269,6 @@ public class Sala extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JpanelMesas;
     private javax.swing.JButton btn_platos;

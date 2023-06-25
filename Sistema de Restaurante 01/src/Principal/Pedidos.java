@@ -4,6 +4,8 @@ import Clases.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.*;
 
 public class Pedidos extends javax.swing.JFrame {
@@ -12,7 +14,9 @@ public class Pedidos extends javax.swing.JFrame {
     private int pedido_mesa;
     private JLabel etqTemporal;
     int posicion = 0;
-    private double total_final=0;
+    private double total_final = 0;
+    private String estado = "activo";
+    // este es el id de mesa pedido de la base de datos
 
     public Pedidos(Sala Pedido, int pedido_mesa) {
         this.Pedido = Pedido;
@@ -24,7 +28,7 @@ public class Pedidos extends javax.swing.JFrame {
     // agregamos el initalternat 
     public void initAlternComponents() {
         setLocationRelativeTo(null);
-        numeroMesa.setText("MESA #" + this.pedido_mesa);
+        numeroMesa.setText("MESA #" + (this.pedido_mesa + 1));
         // le damos un color bonito a el scrool para que se vea 
         pedidos.setLayout(new BoxLayout(pedidos, BoxLayout.Y_AXIS));
         pedidos.setBackground(Color.WHITE);
@@ -65,61 +69,123 @@ public class Pedidos extends javax.swing.JFrame {
 
     // aqui hacemos la busqueda del producto en especifico
     public void buscarPlato() {
-        String platos = plato.getText().trim(); // Eliminar los espacios en blanco al principio y al final
+        String platos = plato.getText().trim();
+// Eliminar los espacios en blanco al principio y al final
+        Plato platos_t = (this.Pedido.database.consultarProducto(platos));
 
-        for (int i = 0; i < this.Pedido.platos.length; i++) {
-            String plato = this.Pedido.platos[i].getNombre().trim(); // Eliminar los espacios en blanco al principio y al final del nombre del plato
-
-            if (plato != null && plato.equalsIgnoreCase(platos)) {
-                //System.out.println("El plato existe");
-                habilitarInput(this.cantPlatos);
-                this.tpPlato.setText(platos);
-                return; // Terminar el bucle si se encuentra el plato
-            } else {
-                deshabilitarInput(this.cantPlatos);
-            }
+        if (platos_t != null) {
+            //System.out.println("El plato existe");
+            habilitarInput(this.cantPlatos);
+            this.tpPlato.setText(platos_t.getNombre());
+            return; // Terminar el bucle si se encuentra el plato
+        } else {
+            deshabilitarInput(this.cantPlatos);
         }
 
-        //System.out.println("El plato buscado no existe");
     }
 
-    
-    // TOCA CORREGIR QUE SI INGRESA UNA LETRA NO LO DEJE PARA QUE NO  NOS DE ERROR Y NOS DAÑE EL CODIGO QUE TENEMOS 
     public void agregarPlato() {
         String plato = this.tpPlato.getText();
         String cantidad = this.cantPlatos.getText();
 
-        if (!cantidad.isEmpty()) {
-            int cantidadT = Integer.parseInt(cantidad);
-            for (int i = 0; i < this.Pedido.platos.length; i++) {
-                if (this.Pedido.platos[i].getNombre().equalsIgnoreCase(plato) && this.Pedido.platos[i] != null) {
-                    double precio = this.Pedido.platos[i].getPrecio();
+        Plato platos = this.Pedido.database.consultarProducto(plato);
 
-                    if (cantidadT <= 0) {
-                        System.out.println("NO SE PUEDE AGREGAR PEDIDOS PORQUE LA CANTIDAD ES IGUAL A CERO");
+        if (!plato.equals("") && !cantidad.isEmpty() && platos != null) {
+            // AQUI AGREGAMOS LA MESA PEDIDO DE DICHA MESA
+            // creamos la fecha 
+
+            Date fechaHoraActual = new Date();
+            // Crear un formato para la fecha y la hora
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            // Formatear la fecha y la hora actual utilizando el formato
+            String fechaHoraFormateada = formato.format(fechaHoraActual);
+            // Guardar la fecha y la hora formateada en una variable de tipo String
+            String fechaHoraString = fechaHoraFormateada;
+
+            // agregamos el estado 
+            this.Pedido.database.insertarMesaPedido((pedido_mesa + 1), fechaHoraString, total_final, this.estado);
+            // CREAMOS EL PLATO 
+            if (validarNumero(cantidad) == true) {
+                int cantidadT = Integer.parseInt(cantidad);
+                double precio = platos.getPrecio();
+                double subtotal;
+                if (cantidadT <= 0) {
+                    System.out.println("NO SE PUEDE AGREGAR PEDIDOS PORQUE LA CANTIDAD ES IGUAL A CERO");
+                    return; // Agregar esta línea para finalizar la ejecución del método
+                } else {
+                    // Obtener el total actual del pedido activo
+                    int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+                    System.out.println("ID DE MESA PEDIDO: " + idMesaPedido);
+                    if (idMesaPedido != -1) {
+                        // Hay un pedido activo para la mesa, obtener el total actual
+                        double totalActual = this.Pedido.database.obtenerTotalMesaPedido(idMesaPedido);
+
+                        subtotal = cantidadT * precio;
+                        double nuevoTotal = totalActual + subtotal;
+                        System.out.println("Nuevo Total:" + totalActual);
+                        System.out.println("el subtotal es:" + subtotal);
+                        // Actualizar el total en la base de datos
+                        boolean actualizacionExitosa = this.Pedido.database.actualizarTotalMesaPedido(pedido_mesa + 1, nuevoTotal);
+
+                        if (actualizacionExitosa) {
+                            System.out.println("Se actualizó el total del pedido para la mesa porq" + (pedido_mesa + 1) + ".");
+                        } else {
+                            System.out.println("No se pudo actualizar el total del pedido para la mesa " + (pedido_mesa + 1) + ".");
+                        }
+
+                        total_final+= nuevoTotal;
                     } else {
-                        double subtotal = cantidadT * precio;
-                        //aqui empesamos a sumar el total de los pediodos que valla haciendo
-                        total_final+=subtotal;
-                        etqTemporal = new JLabel("PLATO: " + this.Pedido.platos[i].getNombre() + " | CANTIDAD-PLATOS: " + cantidad + " | SUBTOTAL: " + subtotal);
-                        // creamo una instancia de la clase p para guadarlo en la matrix
-                        MesaP temporal_p = new MesaP(this.pedido_mesa, this.Pedido.platos[i].getNombre(), cantidadT, subtotal);
-                        // mostramos esto en detalles de pedidos
-                        this.Pedido.pedidos_mesas[this.pedido_mesa][posicion] = temporal_p;
+                        // No hay un pedido activo para la mesa, crear uno nuevo
+                        
 
-                        JPopupMenu.Separator separador = new JPopupMenu.Separator();
-                        pedidos.add(separador);
-                        pedidos.add(etqTemporal);
-                        revalidate();
-                        break;
+                        subtotal = cantidadT * precio;
+                        total_final+= subtotal; // Actualizar el total con el subtotal del nuevo plato
                     }
+
+                    etqTemporal = new JLabel("PLATO: " + platos.getNombre() + " | CANTIDAD-PLATOS: " + cantidad + " | SUBTOTAL: " + subtotal);
+                    // creamo una instancia de la clase p para guadarlo en la matrix
+                    MesaP temporal_p = new MesaP(this.pedido_mesa, platos.getNombre(), cantidadT, subtotal, platos.getidentificador());
+                    // mostramos esto en detalles de pedidos
+                    this.Pedido.pedidos_mesas[this.pedido_mesa][posicion] = temporal_p;
+
+                    // aqui guadarmos los items del pedidos dependiendo si el pedido esta activo 
+                    if (idMesaPedido != -1) {
+                        this.Pedido.database.insertarItemPedido(idMesaPedido, platos.getidentificador(), cantidadT, subtotal);
+                    }
+
+                    JPopupMenu.Separator separador = new JPopupMenu.Separator();
+                    pedidos.add(separador);
+                    pedidos.add(etqTemporal);
+                    revalidate();
                 }
+                posicion++;
+
+            } else {
+                System.out.println("El VALOR INGRESADO NO ES UN NÚMERO");
+                return; // Agregar esta línea para finalizar la ejecución del método
             }
-            posicion++;
         } else {
             System.out.println("LA CANTIDAD DE PLATOS NO PUEDE ESTAR VACÍA");
+            return; // Agregar esta línea para finalizar la ejecución del método
         }
+
         mostrarPedidos(this.pedido_mesa);
+    }
+
+    /// metodo para agregar total a la base de datos si es
+    // metodo para validar si es un numero
+    public boolean validarNumero(String texto) {
+        int contador = 0;
+        for (int i = 0; i < texto.length(); i++) {
+            int codigo = (int) texto.charAt(i);
+            if ((codigo < 48 || codigo > 57) && codigo != 44 && codigo != 45 && codigo != 46) {
+                return false;
+            }
+            if (codigo == 44 || codigo == 46) {
+                contador++;
+            }
+        }
+        return (contador <= 1);
     }
 
     public void mostrarPedidos(int mesa) {
@@ -129,6 +195,7 @@ public class Pedidos extends javax.swing.JFrame {
                 MesaP pedido = this.Pedido.pedidos_mesas[mesa][j];
                 if (pedido != null) {
                     System.out.println("ID de la factura: " + pedido.getIdFactura());
+                    System.out.println("Identificador del plato:" + pedido.getIdentificador());
                     System.out.println("Numero de Pedido:" + j);
                     System.out.println("Nombre del plato: " + pedido.getNombrePlato());
                     System.out.println("Cantidad de platos: " + pedido.getCantidadPlatos());
@@ -141,6 +208,7 @@ public class Pedidos extends javax.swing.JFrame {
         } else {
             System.out.println("No hay pedidos para la mesa especificada.");
         }
+
     }
 
     //creamo el metodo para habilitar y desablitar los inputs
@@ -375,7 +443,7 @@ public class Pedidos extends javax.swing.JFrame {
     private void btn_volver2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volver2ActionPerformed
         // AQUI VA EL CODIGO DE DEVOLVER A LA PAGINA ANTERIOR 
         Pedido.setVisible(true);
-        setVisible(false);
+        dispose();
         //setVisible(false);
     }//GEN-LAST:event_btn_volver2ActionPerformed
 

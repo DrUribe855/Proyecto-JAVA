@@ -7,11 +7,14 @@ public class MesaP {
     private int cantidadPlatos;
     private double subtotal;
 
-    public MesaP(int idFactura, String nombrePlato, int cantidadPlatos, double subtotal) {
+    private int identificador;
+
+    public MesaP(int idFactura, String nombrePlato, int cantidadPlatos, double subtotal,int identificador) {
         this.idFactura = idFactura;
         this.nombrePlato = nombrePlato;
         this.cantidadPlatos = cantidadPlatos;
         this.subtotal = subtotal;
+        this.identificador=identificador;
     }
 
     public int getIdFactura() {
@@ -22,6 +25,13 @@ public class MesaP {
         this.idFactura = idFactura;
     }
 
+    public int getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(int identificador) {
+        this.identificador = identificador;
+    }
     public String getNombrePlato() {
         return nombrePlato;
     }
