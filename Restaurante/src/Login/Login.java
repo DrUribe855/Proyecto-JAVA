@@ -2,7 +2,7 @@
 package Login;
 
 import Clases.DataBase;
-import ModuloPlatos.PrincipalInterface;
+import Principal.PrincipalInterface;
 import java.awt.Color;
 
 public class Login extends javax.swing.JFrame {
