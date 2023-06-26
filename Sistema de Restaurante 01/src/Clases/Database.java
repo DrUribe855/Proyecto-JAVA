@@ -67,7 +67,7 @@ public class Database {
             for (int i = cantidadActual + 1; i <= mesas; i++) {
                 int indice = i;
                 // Validar si el valor ya está registrado en la base de datos
-                
+
                 String consultaValidacion = "SELECT id FROM mesas WHERE id = " + indice;
                 ResultSet resultado = baseDate.executeQuery(consultaValidacion);
                 if (resultado.next()) {
@@ -201,15 +201,49 @@ public class Database {
         }
     }
 
+    public boolean actulizarEstadoPedido(int idMesaPedido, String estado) {
+        try {
+            String actualizarEstado = "UPDATE mesapedido SET estado = '" + estado + "' WHERE id = " + idMesaPedido;
+            int respuestaEstado = baseDate.executeUpdate(actualizarEstado);
+            if (respuestaEstado > 0) {
+                System.out.println("SE ACTULIZO EL ESTADO DE LA MESA ");
+                return true;
+            } else {
+                System.out.println("NO SE PUEDO CAMBIAR EL ESTAD DE LA MESA" + idMesaPedido);
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR AL ACTUALIZAR EL ESTADO DE LA MESA : " + e.getMessage());
+            return false;
+        }
+    }
+
+    // metodo par insertal la factura de la mesa pedido si esta activa y no cancelada 
+    public boolean insertarFacturaMesaPedido(String fecha, int id_mesaPedido) {
+        String consulta = "INSERT INTO factura(fecha,id_mesa_pedido) VALUES ('" +fecha + "','" + id_mesaPedido + "')";
+        try {
+            int respuesta = baseDate.executeUpdate(consulta);
+            if (respuesta > 0) {
+                System.out.println("REGISTRO DE ITEM CON EXITO");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR AL INSERTAR:" + e.getMessage());
+            return false;
+        }
+    }
+
     // obtenemos el total de mesa pedido 
     public double obtenerTotalMesaPedido(int idMesaPedido) {
         try {
             String consulta = "SELECT total FROM mesapedido WHERE id = " + idMesaPedido;
             ResultSet resultado = baseDate.executeQuery(consulta);
             resultado.next();
-            if (resultado.getRow()==1) {
+            if (resultado.getRow() == 1) {
                 double total = Double.parseDouble(resultado.getString("total"));
-                System.out.println("entro acá jijo - "+total);
+                System.out.println("TOTAL DE LA BASE DE DATOS " + total);
                 resultado.close();
                 return total;
             } else {
@@ -224,15 +258,15 @@ public class Database {
     }
 
     public ResultSet getListaItems(int idMesaPedido) {
-       try {
+        try {
             String consulta = "SELECT * FROM items_pedido INNER JOIN platos ON items_pedido.id_plato = platos.codigo WHERE id_mesa_pedido = " + idMesaPedido;
             ResultSet resultado = baseDate.executeQuery(consulta);
             resultado.next();
-            
-            if (resultado.getRow()==1) {
+
+            if (resultado.getRow() == 1) {
                 return resultado;
-            } 
-            
+            }
+
             return null;
         } catch (SQLException e) {
             System.out.println("ERROR AL OBTENER LOS ITEMS DEL PEDIDO: " + e.getMessage());

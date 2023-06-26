@@ -30,7 +30,7 @@ public class Pedidos extends javax.swing.JFrame {
         this.pedido_mesa = pedido_mesa;
         initComponents();
         initAlternComponents();
-        
+
         cargarDatosPrevios();
     }
 
@@ -111,7 +111,7 @@ public class Pedidos extends javax.swing.JFrame {
 
             // agregamos el estado 
             this.Pedido.database.insertarMesaPedido((pedido_mesa + 1), fechaHoraString, total_final, this.estado);
-            
+
             // CREAMOS EL PLATO 
             if (validarNumero(cantidad) == true) {
                 int cantidadT = Integer.parseInt(cantidad);
@@ -143,10 +143,9 @@ public class Pedidos extends javax.swing.JFrame {
                         total_final = nuevoTotal;
                     } else {
                         // No hay un pedido activo para la mesa, crear uno nuevo
-                        
 
                         subtotal = cantidadT * precio;
-                        total_final+= subtotal; // Actualizar el total con el subtotal del nuevo plato
+                        total_final += subtotal; // Actualizar el total con el subtotal del nuevo plato
                     }
 
                     etqTemporal = new JLabel("PLATO: " + platos.getNombre() + " | CANTIDAD-PLATOS: " + cantidad + " | SUBTOTAL: " + subtotal);
@@ -160,8 +159,8 @@ public class Pedidos extends javax.swing.JFrame {
                         this.Pedido.database.insertarItemPedido(idMesaPedido, platos.getidentificador(), cantidadT, subtotal);
                     }
                     this.total.setText(Double.toString(total_final));
-                    
-                    Object[] nuevoItem = new Object[]{ platos.getidentificador(), platos.getNombre(), platos.getPrecio(), cantidad, subtotal };
+
+                    Object[] nuevoItem = new Object[]{platos.getidentificador(), platos.getNombre(), platos.getPrecio(), cantidad, subtotal};
                     this.modelo.addRow(nuevoItem);
                     revalidate();
                 }
@@ -176,9 +175,10 @@ public class Pedidos extends javax.swing.JFrame {
             return; // Agregar esta línea para finalizar la ejecución del método
         }
 
-        mostrarPedidos(this.pedido_mesa);
+        //lo comente ya que no lo 
+        //mostrarPedidos(this.pedido_mesa);
         // esto es para actulizar el color de la mesa a libre
-        Pedido.verificarEstadoMesa(pedido_mesa+1);
+        Pedido.verificarEstadoMesa(pedido_mesa + 1);
     }
 
     /// metodo para agregar total a la base de datos si es
@@ -197,6 +197,8 @@ public class Pedidos extends javax.swing.JFrame {
         return (contador <= 1);
     }
 
+    //esto lo comente ya que solo era para ver lo que llegaba en consola
+    /*
     public void mostrarPedidos(int mesa) {
         if (this.Pedido.pedidos_mesas != null && mesa >= 0 && mesa < this.Pedido.pedidos_mesas.length) {
             System.out.println("Mesa: " + mesa);
@@ -213,14 +215,85 @@ public class Pedidos extends javax.swing.JFrame {
                 }
             }
             // aqui mostramos tambien el total de la compra que valla el agregando
-            this.total.setText(Double.toString(total_final));
+            //this.total.setText(Double.toString(total_final));
         } else {
             System.out.println("No hay pedidos para la mesa especificada.");
+        }
+    }
+     */
+    // metodo para cargar los datos previso si tiene de la base de datos
+    private void cargarDatosPrevios() {
+        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        total_final = (idMesaPedido != -1) ? this.Pedido.database.obtenerTotalMesaPedido(idMesaPedido) : 0;
+        this.total.setText(String.valueOf(total_final));
+
+        ResultSet listaItems = this.Pedido.database.getListaItems(idMesaPedido);
+        if (listaItems != null) {
+            try {
+                this.modelo.setRowCount(0);
+                do {
+                    Object[] nuevoItem = new Object[]{listaItems.getString("codigo"), listaItems.getString("nombre"), listaItems.getString("precio"), listaItems.getString("cantidad"), listaItems.getString("subtotal")};
+                    this.modelo.addRow(nuevoItem);
+                } while (listaItems.next());
+            } catch (SQLException ex) {
+                System.out.println("Erro al extraer los datos: " + ex.getMessage());
+            }
+        }
+    }
+
+    public void cancelarPedido() {
+        // cambiamos el estado de la mesa pedido a cancelado en el caso que cancele la factura 
+        this.estado = "cancelado";
+        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        if (idMesaPedido != -1) {
+            // ahora cambiamos el estado de la mesa en el caso que se encuentre activa 
+
+            // llamamos el metodo para cambiar el estado de la mesa 
+            boolean uptadeEstadoExitoso = this.Pedido.database.actulizarEstadoPedido(idMesaPedido, estado);
+            if (uptadeEstadoExitoso) {
+                System.out.println("SE A CANCELADO EL PEDIDO CON EXITO");
+                this.Pedido.verificarEstadoMesa(pedido_mesa + 1);
+            } else {
+                System.out.println("ERROR AL CANCELAR EL PEDIDO DE LA MESA" + idMesaPedido);
+            }
+        }
+    }
+
+    // metodo para confirmar el pago de la factura
+    public void confimarFactura() {
+        // cabiamos el estado de la factura pagada
+        this.estado = "pagado";
+        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        // fecha para guadar en la base de datos con la hora de confirmacion del pago 
+        Date fechaHoraActual = new Date();
+        // Crear un formato para la fecha y la hora
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // Formatear la fecha y la hora actual utilizando el formato
+        String fechaHoraFormateada = formato.format(fechaHoraActual);
+        // Guardar la fecha y la hora formateada en una variable de tipo String
+        String fecha = fechaHoraFormateada;
+        if (idMesaPedido != -1) {
+            // ahora cambiamos el estado de la mesa en el caso que se encuentre activa 
+
+            // llamamos el metodo para cambiar el estado de la mesa 
+            boolean uptadeEstadoExitoso = this.Pedido.database.actulizarEstadoPedido(idMesaPedido, estado);
+            if (uptadeEstadoExitoso) {
+                boolean exitoso = this.Pedido.database.insertarFacturaMesaPedido(fecha, idMesaPedido);
+                if (exitoso) {
+                    System.out.println("PAGO EXITOSO");
+                } else {
+                    System.out.println("SE A PAGADO LA FACTURA CON EXITO");
+
+                }
+                this.Pedido.verificarEstadoMesa(pedido_mesa + 1);
+            } else {
+                System.out.println("ERROR EL LA FACTURA NO SE PUDO ACTULIZAR EL ESTADO :" + idMesaPedido);
+            }
         }
 
     }
 
-    //creamo el metodo para habilitar y desablitar los inputs
+    //creamos el metodo para habilitar y desablitar los inputs
     public void deshabilitarInput(JTextField input) {
         input.setEditable(false);
         input.setEnabled(false);
@@ -290,6 +363,11 @@ public class Pedidos extends javax.swing.JFrame {
         btn_volver.setText("CANCELAR P");
         btn_volver.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_volver.setFocusPainted(false);
+        btn_volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_volverActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Palatino Linotype", 0, 18)); // NOI18N
         jLabel1.setText("PLATO:");
@@ -323,6 +401,11 @@ public class Pedidos extends javax.swing.JFrame {
         btn_volver1.setText("FACTURAR");
         btn_volver1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_volver1.setFocusPainted(false);
+        btn_volver1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_volver1ActionPerformed(evt);
+            }
+        });
 
         btn_volver2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
         btn_volver2.setText("VOLVER");
@@ -471,8 +554,23 @@ public class Pedidos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // aqui va el codigo de agregar el producto a el scrrol y hacer que la mesa esta ocupado e el caso que tenga algo ya pedido 
         agregarPlato();
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
+        // aqui va el codigo para cancelar el pedido en el caso que el usuario no desee pedir nada al final
+        cancelarPedido();
+
+        Pedido.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btn_volverActionPerformed
+
+    private void btn_volver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volver1ActionPerformed
+        // aqui va el metodo par confirmal el pago de la compra
+        confimarFactura();
+        Pedido.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btn_volver1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_volver;
@@ -495,22 +593,4 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JPanel ventanaPedidos;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarDatosPrevios() {
-        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
-        total_final = (idMesaPedido!=-1)? this.Pedido.database.obtenerTotalMesaPedido(idMesaPedido) : 0;
-        this.total.setText(String.valueOf(total_final));
-        
-        ResultSet listaItems = this.Pedido.database.getListaItems(idMesaPedido);
-        if (listaItems!=null) {
-            try {
-                this.modelo.setRowCount(0);
-                do{
-                    Object[] nuevoItem = new Object[]{ listaItems.getString("codigo"), listaItems.getString("nombre"), listaItems.getString("precio"), listaItems.getString("cantidad"), listaItems.getString("subtotal") };
-                    this.modelo.addRow(nuevoItem);
-                }while(listaItems.next());
-            } catch (SQLException ex) {
-                System.out.println("Erro al extraer los datos: "+ex.getMessage());
-            }
-        }
-    }
 }
