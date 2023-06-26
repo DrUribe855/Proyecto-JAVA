@@ -1,12 +1,18 @@
 package Principal;
 
 import Clases.*;
+import com.mysql.cj.protocol.Resultset;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class Pedidos extends javax.swing.JFrame {
 
@@ -16,6 +22,7 @@ public class Pedidos extends javax.swing.JFrame {
     int posicion = 0;
     private double total_final = 0;
     private String estado = "activo";
+    private DefaultTableModel modelo;
     // este es el id de mesa pedido de la base de datos
 
     public Pedidos(Sala Pedido, int pedido_mesa) {
@@ -23,15 +30,14 @@ public class Pedidos extends javax.swing.JFrame {
         this.pedido_mesa = pedido_mesa;
         initComponents();
         initAlternComponents();
+        
+        cargarDatosPrevios();
     }
 
     // agregamos el initalternat 
     public void initAlternComponents() {
         setLocationRelativeTo(null);
         numeroMesa.setText("MESA #" + (this.pedido_mesa + 1));
-        // le damos un color bonito a el scrool para que se vea 
-        pedidos.setLayout(new BoxLayout(pedidos, BoxLayout.Y_AXIS));
-        pedidos.setBackground(Color.WHITE);
         // creamo el evento para agregarselo al input 
         KeyListener eventoKeyBuscarProducto = new KeyListener() {
             public void keyPressed(KeyEvent e) {
@@ -64,7 +70,7 @@ public class Pedidos extends javax.swing.JFrame {
             }
         };
         this.plato.addKeyListener(eventoKeyBuscarProducto);
-
+        this.modelo = (DefaultTableModel) this.tablaItemsPedido.getModel();
     }
 
     // aqui hacemos la busqueda del producto en especifico
@@ -104,6 +110,7 @@ public class Pedidos extends javax.swing.JFrame {
 
             // agregamos el estado 
             this.Pedido.database.insertarMesaPedido((pedido_mesa + 1), fechaHoraString, total_final, this.estado);
+            
             // CREAMOS EL PLATO 
             if (validarNumero(cantidad) == true) {
                 int cantidadT = Integer.parseInt(cantidad);
@@ -119,10 +126,9 @@ public class Pedidos extends javax.swing.JFrame {
                     if (idMesaPedido != -1) {
                         // Hay un pedido activo para la mesa, obtener el total actual
                         double totalActual = this.Pedido.database.obtenerTotalMesaPedido(idMesaPedido);
-
                         subtotal = cantidadT * precio;
                         double nuevoTotal = totalActual + subtotal;
-                        System.out.println("Nuevo Total:" + totalActual);
+                        System.out.println("Nuevo Total:" + nuevoTotal);
                         System.out.println("el subtotal es:" + subtotal);
                         // Actualizar el total en la base de datos
                         boolean actualizacionExitosa = this.Pedido.database.actualizarTotalMesaPedido(pedido_mesa + 1, nuevoTotal);
@@ -133,7 +139,7 @@ public class Pedidos extends javax.swing.JFrame {
                             System.out.println("No se pudo actualizar el total del pedido para la mesa " + (pedido_mesa + 1) + ".");
                         }
 
-                        total_final+= nuevoTotal;
+                        total_final = nuevoTotal;
                     } else {
                         // No hay un pedido activo para la mesa, crear uno nuevo
                         
@@ -152,10 +158,10 @@ public class Pedidos extends javax.swing.JFrame {
                     if (idMesaPedido != -1) {
                         this.Pedido.database.insertarItemPedido(idMesaPedido, platos.getidentificador(), cantidadT, subtotal);
                     }
-
-                    JPopupMenu.Separator separador = new JPopupMenu.Separator();
-                    pedidos.add(separador);
-                    pedidos.add(etqTemporal);
+                    this.total.setText(Double.toString(total_final));
+                    
+                    Object[] nuevoItem = new Object[]{ platos.getidentificador(), platos.getNombre(), platos.getPrecio(), cantidad, subtotal };
+                    this.modelo.addRow(nuevoItem);
                     revalidate();
                 }
                 posicion++;
@@ -234,8 +240,6 @@ public class Pedidos extends javax.swing.JFrame {
         btn_volver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        pedidos = new javax.swing.JPanel();
         plato = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         cantPlatos = new javax.swing.JTextField();
@@ -246,6 +250,8 @@ public class Pedidos extends javax.swing.JFrame {
         btn_volver2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         total = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaItemsPedido = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -287,19 +293,6 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Palatino Linotype", 0, 18)); // NOI18N
         jLabel2.setText("CARTA:");
 
-        javax.swing.GroupLayout pedidosLayout = new javax.swing.GroupLayout(pedidos);
-        pedidos.setLayout(pedidosLayout);
-        pedidosLayout.setHorizontalGroup(
-            pedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
-        );
-        pedidosLayout.setVerticalGroup(
-            pedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 378, Short.MAX_VALUE)
-        );
-
-        jScrollPane1.setViewportView(pedidos);
-
         jButton1.setBackground(new java.awt.Color(204, 51, 0));
         jButton1.setFont(new java.awt.Font("NSimSun", 0, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -338,57 +331,77 @@ public class Pedidos extends javax.swing.JFrame {
 
         total.setEditable(false);
 
+        tablaItemsPedido.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Codigo", "Nombre", "Precio", "Cantidad", "SubTotal"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablaItemsPedido);
+
         javax.swing.GroupLayout ventanaPedidosLayout = new javax.swing.GroupLayout(ventanaPedidos);
         ventanaPedidos.setLayout(ventanaPedidosLayout);
         ventanaPedidosLayout.setHorizontalGroup(
             ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                        .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(ventanaPedidosLayout.createSequentialGroup()
                             .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                                    .addGap(16, 16, 16)
-                                    .addComponent(jLabel4))
-                                .addGroup(ventanaPedidosLayout.createSequentialGroup()
                                     .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                                            .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                                                    .addGap(31, 31, 31)
-                                                    .addComponent(jLabel1))
-                                                .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                                                    .addGap(43, 43, 43)
-                                                    .addComponent(jLabel2)))
-                                            .addGap(18, 18, 18))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaPedidosLayout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                    .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGap(31, 31, 31)
+                                            .addComponent(jLabel1))
                                         .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                                            .addComponent(cantPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jButton1))
-                                        .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(plato, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                                            .addComponent(tpPlato, javax.swing.GroupLayout.Alignment.LEADING))))
+                                            .addGap(43, 43, 43)
+                                            .addComponent(jLabel2)))
+                                    .addGap(18, 18, 18))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaPedidosLayout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                                    .addGap(29, 29, 29)
-                                    .addComponent(btn_volver2)
-                                    .addGap(35, 35, 35)
-                                    .addComponent(btn_volver)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btn_volver1))))
-                        .addGap(0, 16, Short.MAX_VALUE)))
-                .addContainerGap())
+                                    .addComponent(cantPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jButton1))
+                                .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(plato, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                                    .addComponent(tpPlato, javax.swing.GroupLayout.Alignment.LEADING))))
+                        .addGroup(ventanaPedidosLayout.createSequentialGroup()
+                            .addGap(29, 29, 29)
+                            .addComponent(btn_volver2)
+                            .addGap(35, 35, 35)
+                            .addComponent(btn_volver)
+                            .addGap(18, 18, 18)
+                            .addComponent(btn_volver1))
+                        .addGroup(ventanaPedidosLayout.createSequentialGroup()
+                            .addGap(16, 16, 16)
+                            .addComponent(jLabel4))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         ventanaPedidosLayout.setVerticalGroup(
             ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,9 +421,9 @@ public class Pedidos extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(30, 30, 30)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -464,12 +477,31 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel numeroMesa;
-    private javax.swing.JPanel pedidos;
     private javax.swing.JTextField plato;
+    private javax.swing.JTable tablaItemsPedido;
     private javax.swing.JTextField total;
     private javax.swing.JTextField tpPlato;
     private javax.swing.JPanel ventanaPedidos;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarDatosPrevios() {
+        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        total_final = (idMesaPedido!=-1)? this.Pedido.database.obtenerTotalMesaPedido(idMesaPedido) : 0;
+        this.total.setText(String.valueOf(total_final));
+        
+        ResultSet listaItems = this.Pedido.database.getListaItems(idMesaPedido);
+        if (listaItems!=null) {
+            try {
+                this.modelo.setRowCount(0);
+                do{
+                    Object[] nuevoItem = new Object[]{ listaItems.getString("codigo"), listaItems.getString("nombre"), listaItems.getString("precio"), listaItems.getString("cantidad"), listaItems.getString("subtotal") };
+                    this.modelo.addRow(nuevoItem);
+                }while(listaItems.next());
+            } catch (SQLException ex) {
+                System.out.println("Erro al extraer los datos: "+ex.getMessage());
+            }
+        }
+    }
 }

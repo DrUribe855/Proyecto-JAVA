@@ -1,6 +1,7 @@
 package Clases;
 
 // importamos la libreria para manipulacion de base de datos 
+import com.mysql.cj.protocol.Resultset;
 import java.sql.*;
 
 public class Database {
@@ -203,10 +204,12 @@ public class Database {
     // obtenemos el total de mesa pedido 
     public double obtenerTotalMesaPedido(int idMesaPedido) {
         try {
-            String consulta = "SELECT total FROM mesapedido WHERE id_mesa = " + idMesaPedido;
+            String consulta = "SELECT total FROM mesapedido WHERE id = " + idMesaPedido;
             ResultSet resultado = baseDate.executeQuery(consulta);
-            if (resultado.next()) {
-                double total = resultado.getDouble("total");
+            resultado.next();
+            if (resultado.getRow()==1) {
+                double total = Double.parseDouble(resultado.getString("total"));
+                System.out.println("entro acá jijo - "+total);
                 resultado.close();
                 return total;
             } else {
@@ -217,6 +220,23 @@ public class Database {
         } catch (SQLException e) {
             System.out.println("ERROR AL OBTENER EL TOTAL DEL PEDIDO: " + e.getMessage());
             return 0.0;
+        }
+    }
+
+    public ResultSet getListaItems(int idMesaPedido) {
+       try {
+            String consulta = "SELECT * FROM items_pedido INNER JOIN platos ON items_pedido.id_plato = platos.codigo WHERE id_mesa_pedido = " + idMesaPedido;
+            ResultSet resultado = baseDate.executeQuery(consulta);
+            resultado.next();
+            
+            if (resultado.getRow()==1) {
+                return resultado;
+            } 
+            
+            return null;
+        } catch (SQLException e) {
+            System.out.println("ERROR AL OBTENER LOS ITEMS DEL PEDIDO: " + e.getMessage());
+            return null;
         }
     }
 
