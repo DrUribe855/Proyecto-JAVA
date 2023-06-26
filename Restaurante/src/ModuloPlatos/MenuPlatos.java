@@ -27,7 +27,6 @@ public class MenuPlatos extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         btnRegistrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         btnConsultar = new javax.swing.JButton();
         jEImagePanel1 = new LIB.JEImagePanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -38,6 +37,9 @@ public class MenuPlatos extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        btnRegistrar.setBackground(new java.awt.Color(0, 0, 0));
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrar.setText("Registrar menú");
         btnRegistrar.setFocusable(false);
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -46,7 +48,11 @@ public class MenuPlatos extends javax.swing.JPanel {
             }
         });
 
+        btnModificar.setBackground(new java.awt.Color(0, 0, 0));
+        btnModificar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(255, 255, 255));
         btnModificar.setText("Modificar menú");
+        btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnModificar.setFocusable(false);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -54,9 +60,9 @@ public class MenuPlatos extends javax.swing.JPanel {
             }
         });
 
-        btnEliminar.setText("Eliminar menú");
-        btnEliminar.setFocusable(false);
-
+        btnConsultar.setBackground(new java.awt.Color(0, 0, 0));
+        btnConsultar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
         btnConsultar.setText("Consultar menú");
         btnConsultar.setFocusable(false);
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -73,7 +79,6 @@ public class MenuPlatos extends javax.swing.JPanel {
                 .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                     .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(35, 35, 35))
@@ -81,15 +86,13 @@ public class MenuPlatos extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(72, 72, 72)
+                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71)
                 .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         jEImagePanel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mcdonalds-logo.jpg"))); // NOI18N
@@ -152,7 +155,6 @@ public class MenuPlatos extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegistrar;
     private LIB.JEImagePanel jEImagePanel1;
