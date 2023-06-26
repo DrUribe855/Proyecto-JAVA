@@ -84,7 +84,7 @@ public class InterfazMesas extends javax.swing.JPanel {
         if (idMesaPedidoActiva != -1) {
             // Hay un pedido activo para la mesa, mostrar los datos
             System.out.println("Entro aqui en la primera condicion"+numeroMesa);
-            setVisible(false);
+            //setVisible(false);
 
             Pedidos ventana = new Pedidos(this, numeroMesa);
             ventana.setVisible(true);
@@ -94,7 +94,7 @@ public class InterfazMesas extends javax.swing.JPanel {
             // Puedes utilizar el número de mesa (numeroMesa) para inicializar el nuevo pedido
             System.out.println("Entro aqui en la segunda condicion");
             // Abrir la ventana de pedidos con el nuevo pedido
-            setVisible(false);
+            //setVisible(false);
 
             Pedidos ventana = new Pedidos(this, numeroMesa);
             ventana.setVisible(true);
