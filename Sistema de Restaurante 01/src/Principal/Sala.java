@@ -26,19 +26,6 @@ public class Sala extends javax.swing.JFrame {
         //agregamos la cantidad de mesas a la base de datos 
         database.registrarMesas(cant_mesas);
 
-        // agregamos platos para probrar el pedido de cada mesa
-        /*
-        platos[0] = new Plato(1,"Hamburguesa", 25000.0);
-        platos[1] = new Plato(2,"Pizza", 22000.0);
-        platos[2] = new Plato(3,"Ensalada", 18000.0);
-        platos[3] = new Plato(4,"Sushi", 35000.0);
-        platos[4] = new Plato(5,"Pasta", 28000.0);
-        platos[5] = new Plato(6,"Tacos", 19000.0);
-        platos[6] = new Plato(7,"Arroz con pollo", 20000.0);
-        platos[7] = new Plato(8,"Ceviche", 24000.0);
-        platos[8] = new Plato(9,"Sopa de lentejas", 15000.0);
-        platos[9] = new Plato(10,"Empanadas", 12000.0);
-         */
     }
 
     public void initAlterntComponents() {
@@ -50,26 +37,45 @@ public class Sala extends javax.swing.JFrame {
         setLocationRelativeTo(null);
 
         agregarMesas();
+        //le a añadimos la cantidad de mesas a el metodo para que recorra el areglo para que mire cualers son las mesas que esta ocuapadas
+        verificarEstadoMesa(cant_mesas);
+    }
 
+    public void verificarEstadoMesa(int mesas) {
+        for (int i = 0; i < mesas; i++) {
+            int mesasActivas = this.database.obtenerIdMesaPedidoActiva(i + 1);
+            if (mesasActivas != -1) {
+                // color de estado a oucpado
+                //System.out.println("Entro en estas condicion de ocupado");
+                Color rojoOcupado = new Color(255, 99, 71);
+                this.mesas[i].setBackground(rojoOcupado);
+            } else {
+                // color de estado a libre 
+                //System.out.println("Entro en estas condicion de libre");
+                Color verdeOscuro = new Color(46, 139, 87);
+                this.mesas[i].setBackground(verdeOscuro);
+            }
+        }
     }
 
     // aqui abrimos la ventana del pediodo del cliente 
     // y validamos si en esa posicion ya esta un pedido activo para cargar los datos de ese pedido en especifico 
     public void abrirVentanaPedido(int numeroMesa) {
-        int idMesaPedidoActiva = this.database.obtenerIdMesaPedidoActiva(numeroMesa+1);
+        int idMesaPedidoActiva = this.database.obtenerIdMesaPedidoActiva(numeroMesa + 1);
 
         if (idMesaPedidoActiva != -1) {
             // Hay un pedido activo para la mesa, mostrar los datos
-            System.out.println("Entro aqui en la primera condicion"+numeroMesa);
+            System.out.println("LA MESA ESTA OCUPADA" + numeroMesa);
             setVisible(false);
-
+            
             Pedidos ventana = new Pedidos(this, numeroMesa);
             ventana.setVisible(true);
+
         } else {
             // No hay un pedido activo para la mesa, crear uno nuevo
             // Aquí puedes agregar el código para crear un nuevo pedido
             // Puedes utilizar el número de mesa (numeroMesa) para inicializar el nuevo pedido
-            System.out.println("Entro aqui en la segunda condicion");
+            System.out.println("MESA LIBRE LISTA PARA SU USO");
             // Abrir la ventana de pedidos con el nuevo pedido
             setVisible(false);
 
@@ -86,8 +92,8 @@ public class Sala extends javax.swing.JFrame {
         for (int i = 0; i < cant_mesas; i++) {
             mesas[i] = new JButton("Mesa#" + (i + 1));
             mesas[i].setFont(new Font("Georgia", Font.BOLD, 25));
-            Color verdeOscuro = new Color(46, 139, 87);
-            mesas[i].setBackground(verdeOscuro);
+           // Color verdeOscuro = new Color(46, 139, 87);
+            //mesas[i].setBackground(verdeOscuro);
             mesas[i].setForeground(Color.WHITE);
             // color rgb para cuando la mes esta ocupada 255, 99, 71
             // Cargar la imagen y establecerla como el ícono del botón

@@ -83,6 +83,7 @@ public class Pedidos extends javax.swing.JFrame {
             //System.out.println("El plato existe");
             habilitarInput(this.cantPlatos);
             this.tpPlato.setText(platos_t.getNombre());
+            this.cantPlatos.requestFocus();
             return; // Terminar el bucle si se encuentra el plato
         } else {
             deshabilitarInput(this.cantPlatos);
@@ -176,6 +177,8 @@ public class Pedidos extends javax.swing.JFrame {
         }
 
         mostrarPedidos(this.pedido_mesa);
+        // esto es para actulizar el color de la mesa a libre
+        Pedido.verificarEstadoMesa(pedido_mesa+1);
     }
 
     /// metodo para agregar total a la base de datos si es
@@ -285,6 +288,7 @@ public class Pedidos extends javax.swing.JFrame {
 
         btn_volver.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
         btn_volver.setText("CANCELAR P");
+        btn_volver.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_volver.setFocusPainted(false);
 
         jLabel1.setFont(new java.awt.Font("Palatino Linotype", 0, 18)); // NOI18N
@@ -293,10 +297,12 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Palatino Linotype", 0, 18)); // NOI18N
         jLabel2.setText("CARTA:");
 
-        jButton1.setBackground(new java.awt.Color(204, 51, 0));
-        jButton1.setFont(new java.awt.Font("NSimSun", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setBackground(new java.awt.Color(51, 204, 255));
+        jButton1.setFont(new java.awt.Font("NSimSun", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setText("AGREGAR");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setFocusPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -315,10 +321,12 @@ public class Pedidos extends javax.swing.JFrame {
 
         btn_volver1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
         btn_volver1.setText("FACTURAR");
+        btn_volver1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_volver1.setFocusPainted(false);
 
         btn_volver2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
         btn_volver2.setText("VOLVER");
+        btn_volver2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_volver2.setFocusPainted(false);
         btn_volver2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -463,6 +471,7 @@ public class Pedidos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // aqui va el codigo de agregar el producto a el scrrol y hacer que la mesa esta ocupado e el caso que tenga algo ya pedido 
         agregarPlato();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
