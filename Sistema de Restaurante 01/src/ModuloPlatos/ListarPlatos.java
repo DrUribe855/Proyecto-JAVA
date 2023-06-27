@@ -1,10 +1,18 @@
  
 package ModuloPlatos;
 
+import Clases.ButtonEditor;
+import Clases.ButtonRenderer;
 import Clases.DataBase;
+import Clases.Plato;
 import Principal.PrincipalInterface;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -15,37 +23,58 @@ public class ListarPlatos extends javax.swing.JPanel {
     private PrincipalInterface principal;
     private DataBase database;
     private DefaultTableModel modelo;
+    private Plato[] listaPlatos;
      
     public ListarPlatos(PrincipalInterface principal, DataBase database) {
         this.principal = principal;
         this.database = database;
         initComponents();
+        
         this.modelo = (DefaultTableModel) tablaPlatos.getModel();
+        tablaPlatos.getColumn("Opcion").setCellRenderer(new ButtonRenderer());
+        tablaPlatos.getColumn("Opcion").setCellEditor(new ButtonEditor(new JCheckBox()));
+        
         imprimirPlatos();
     }
     
     public void imprimirPlatos(){
-        try {
-            ResultSet registros = this.database.listarMenu();
-            if(registros!=null && registros.getRow()==1){
-                this.modelo.setRowCount(0);
-                do{
-                    System.out.println(registros.getRow() + " -- " + registros.getString("nombre") + " -- " + registros.getDouble("precio"));
-                    
-                    Object[] plato = new Object[]{ registros.getString("codigo"), registros.getString("nombre"), registros.getDouble("precio") };
-                    this.modelo.addRow(plato);
-                    revalidate();
-                    
-                }while(registros.next());
-            }else{
-                System.out.println("No existen platos");    
-                }
-        } catch (SQLException e) {
-            System.out.println("Error al extrar datos: " + e.getMessage());
+        this.listaPlatos = this.database.getListaPlatos();
+        
+        this.modelo.setRowCount(0);
+        for (int i=0; i<this.listaPlatos.length; i++) {
+            if (this.listaPlatos[i]!=null) {
+                Plato temporal = this.listaPlatos[i];
+                JButton button = new JButton("Cambiar");
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        abrirVentanaInfoPlato( temporal );
+                    }
+                });
+
+                Object[] plato = new Object[]{ this.listaPlatos[i].getCodigo(), this.listaPlatos[i].getNombre(), this.listaPlatos[i].getPrecio(), this.listaPlatos[i].getEstado(), button};
+                this.modelo.addRow(plato);
+            }
         }
+        
         revalidate();
     }
 
+    public void abrirVentanaInfoPlato(Plato plato){
+        System.out.println("Se dio click al plato: "+plato.getNombre());
+        
+        ModificarPlatos ventana = new ModificarPlatos(principal, database, plato.getCodigo());
+        
+        ventana.setTitle("Modificar");
+        ventana.pack();
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
+        
+    }
+    
+     
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -61,26 +90,25 @@ public class ListarPlatos extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("LISTADO DE PLATOS");
 
         tablaPlatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "Precio", "Estado"
+                "Código", "Nombre", "Precio", "Estado", "Opcion"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {

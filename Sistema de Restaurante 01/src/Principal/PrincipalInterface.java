@@ -8,6 +8,7 @@ import ModuloPlatos.ListarPlatos;
 import ModuloPlatos.MenuPlatos;
 import ModuloPlatos.ModificarMenu;
 import ModuloPlatos.RegistrarMenu;
+import javax.swing.JFrame;
 
 import javax.swing.JPanel;
 
@@ -108,10 +109,11 @@ public class PrincipalInterface extends javax.swing.JFrame {
                 .addComponent(restaurantName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(34, 34, 34)
                 .addComponent(btnMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(btnPlatos))
+                .addComponent(btnPlatos)
+                .addContainerGap())
         );
 
         background.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 470));

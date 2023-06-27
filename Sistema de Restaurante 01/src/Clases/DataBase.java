@@ -71,15 +71,22 @@ public class DataBase {
         }
     }
     
-    public ResultSet listarMenu (){
+    public Plato[] getListaPlatos (){
+        Plato[] listaPlatos = new Plato[100];
         try{
             ResultSet registro_p = this.manipularDB.executeQuery("SELECT * FROM platos");
             registro_p.next();
-            return registro_p;
+            if (registro_p.getRow()==1) {
+                int indice = 0;
+                do{
+                    listaPlatos[indice] = new Plato(registro_p.getString("codigo"), registro_p.getString("nombre"), registro_p.getDouble("precio"), registro_p.getString("estado"));
+                    indice++;
+                }while(registro_p.next());
+            }
+            return listaPlatos;
         }catch(SQLException e){
             System.out.println("Error en SELECT" + e.getMessage());
-            return null;
-            
+            return listaPlatos;
         }
     }
     

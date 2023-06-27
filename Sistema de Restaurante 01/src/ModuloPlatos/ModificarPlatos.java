@@ -2,20 +2,48 @@
 package ModuloPlatos;
 
 import Clases.DataBase;
-import Clases.Plato;
 import Principal.PrincipalInterface;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JFrame;
 
  
-public class ModificarMenu extends javax.swing.JPanel {
- 
+public class ModificarPlatos extends javax.swing.JFrame {
+
+   
     public DataBase database;
     private PrincipalInterface principal;
+    private JFrame ventana;
     
-    public ModificarMenu(PrincipalInterface principal, DataBase database) {
+    public ModificarPlatos(PrincipalInterface principal, DataBase database) {
         this.database = database;
         this.principal = principal;
         initComponents();
+    }
+    
+    public ModificarPlatos(PrincipalInterface principal, DataBase database, String codigoPlato) {
+        this.ventana = ventana;
+        this.database = database;
+        this.principal = principal;
+        initComponents();
+        cargarDatosPlato(codigoPlato);
+    }
+    
+    public void cargarDatosPlato(String codigoPlato){
+        if(!codigoPlato.equals("")){
+            try{
+                ResultSet platos = this.database.buscarMenu(codigoPlato);
+                if (platos!=null && platos.getRow()==1) {
+                    this.campoCodigo.setText(codigoPlato);
+                    this.campoNombre.setText(platos.getString("nombre"));
+                    this.campoPrecio.setText(platos.getString("precio"));
+                } else {
+                    System.out.println("Plato no encontrado");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al extraer información del plato");
+            }
+        }
     }
 
     
@@ -33,6 +61,8 @@ public class ModificarMenu extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -153,8 +183,8 @@ public class ModificarMenu extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 742, Short.MAX_VALUE)
@@ -173,6 +203,8 @@ public class ModificarMenu extends javax.swing.JPanel {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -207,9 +239,10 @@ public class ModificarMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-       this.principal.cargarPanelPlatos();
+        dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
+     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -223,7 +256,4 @@ public class ModificarMenu extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
-
-
-     
 }
