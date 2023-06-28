@@ -5,8 +5,6 @@ package Principal;
 import Clases.DataBase;
 import ModuloMesas.InterfazMesas;
 import ModuloPlatos.ListarPlatos;
-import ModuloPlatos.MenuPlatos;
-import ModuloPlatos.ModificarMenu;
 import ModuloPlatos.RegistrarMenu;
 import javax.swing.JFrame;
 
@@ -43,13 +41,14 @@ public class PrincipalInterface extends javax.swing.JFrame {
         contentPrincipal = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         menu.setBackground(new java.awt.Color(13, 71, 161));
 
-        restaurantName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        restaurantName.setFont(new java.awt.Font("MS UI Gothic", 1, 14)); // NOI18N
         restaurantName.setForeground(new java.awt.Color(255, 255, 255));
         restaurantName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         restaurantName.setText("NOMBRE RESTAURANTE");
@@ -162,15 +161,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
        revalidate();
     }
     
-    public void cargarPanelModificarMenu(){
-        this.contentPrincipal.removeAll();
-        this.contentPrincipal.repaint();
-        
-        ModificarMenu contenTemporal = new ModificarMenu(this, database);
-        contenTemporal.setSize(contentPrincipal.getSize());
-        contentPrincipal.add(contenTemporal);
-        revalidate();
-    }
+    
     
     public void cargarPanelListarPlatos(){
         this.contentPrincipal.removeAll();
@@ -186,7 +177,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
         this.contentPrincipal.removeAll();
         this.contentPrincipal.repaint();
         
-        MenuPlatos contenMenuPlatos = new MenuPlatos(this, database);
+        ListarPlatos contenMenuPlatos = new ListarPlatos(this, database);
         contenMenuPlatos.setSize(this.contentPrincipal.getSize());
         contentPrincipal.add(contenMenuPlatos);
         revalidate();

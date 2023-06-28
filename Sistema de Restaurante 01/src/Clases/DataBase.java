@@ -24,10 +24,25 @@ public class DataBase {
         }
     }
     
+    //Usuario
+    
+    public ResultSet log(String user, String password){
+        try {
+            ResultSet consulta = this.manipularDB.executeQuery("SELECT * FROM usuarios WHERE usuario='"+user+"'");
+            if(consulta != null){
+                consulta.next();
+            }
+            return consulta;
+        } catch (SQLException e) {
+            System.out.println("Error en consulta de usuario: "+e.getMessage());
+            return null;
+        }
+    }
+    
     //Modulo platos
 
-    public boolean registrarPlato(String codigo, String nombre, double precio) {
-        String consulta = "INSERT INTO platos(codigo, nombre, precio) VALUES ('" + codigo + "','" + nombre + "','" + precio + "')";
+    public boolean registrarPlato(String codigo, String nombre, double precio, String estado) {
+        String consulta = "INSERT INTO platos(codigo, nombre, precio, estado) VALUES ('" + codigo + "','" + nombre + "','" + precio + "','"+estado+"' )";
         try {
             int respuesta = manipularDB.executeUpdate(consulta);
             if(respuesta > 0){
@@ -56,9 +71,9 @@ public class DataBase {
         }
     }
     
-    public boolean modificarMenu(String codigo, String nombre, double precio){
+    public boolean modificarMenu(String codigo, String nombre, double precio, String estado){
         try {
-            String consulta = "UPDATE platos SET nombre='"+nombre+"', precio='"+precio+"' WHERE codigo='"+codigo+"'";
+            String consulta = "UPDATE platos SET nombre='"+nombre+"', precio='"+precio+"', estado='"+estado+"' WHERE codigo='"+codigo+"'";
             int resp = manipularDB.executeUpdate(consulta);
             if(resp > 0){
                 return true;
