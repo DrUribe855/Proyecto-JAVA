@@ -3,6 +3,7 @@ package Principal;
 
  
 import Clases.DataBase;
+import Login.Login;
 import ModuloMesas.InterfazMesas;
 import ModuloPlatos.ListarPlatos;
 import ModuloPlatos.RegistrarMenu;
@@ -38,6 +39,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         btnPlatos = new javax.swing.JButton();
         btnMesas = new javax.swing.JButton();
+        btnPlatos1 = new javax.swing.JButton();
         contentPrincipal = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,7 +58,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
 
         btnPlatos.setBackground(new java.awt.Color(21, 101, 192));
-        btnPlatos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPlatos.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 18)); // NOI18N
         btnPlatos.setForeground(new java.awt.Color(255, 255, 255));
         btnPlatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-cocina-50.png"))); // NOI18N
         btnPlatos.setText("Platos");
@@ -73,7 +75,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
         });
 
         btnMesas.setBackground(new java.awt.Color(21, 101, 192));
-        btnMesas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnMesas.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 18)); // NOI18N
         btnMesas.setForeground(new java.awt.Color(255, 255, 255));
         btnMesas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-caja-registradora-50 (1).png"))); // NOI18N
         btnMesas.setText("Mesas");
@@ -90,6 +92,23 @@ public class PrincipalInterface extends javax.swing.JFrame {
             }
         });
 
+        btnPlatos1.setBackground(new java.awt.Color(21, 101, 192));
+        btnPlatos1.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 18)); // NOI18N
+        btnPlatos1.setForeground(new java.awt.Color(255, 255, 255));
+        btnPlatos1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-log-out-40.png"))); // NOI18N
+        btnPlatos1.setText("Salir");
+        btnPlatos1.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 10, 5, 1, new java.awt.Color(0, 0, 0)));
+        btnPlatos1.setBorderPainted(false);
+        btnPlatos1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPlatos1.setFocusPainted(false);
+        btnPlatos1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPlatos1.setIconTextGap(35);
+        btnPlatos1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlatos1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuLayout = new javax.swing.GroupLayout(menu);
         menu.setLayout(menuLayout);
         menuLayout.setHorizontalGroup(
@@ -99,6 +118,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(btnMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnPlatos1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(btnPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         menuLayout.setVerticalGroup(
@@ -110,9 +130,11 @@ public class PrincipalInterface extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(btnMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(btnPlatos)
-                .addContainerGap())
+                .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(menuLayout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(btnPlatos1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPlatos)))
         );
 
         background.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 470));
@@ -197,11 +219,18 @@ public class PrincipalInterface extends javax.swing.JFrame {
         cargarPanelMesas();
     }//GEN-LAST:event_btnMesasActionPerformed
 
+    private void btnPlatos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlatos1ActionPerformed
+        dispose();
+        Login ventana = new Login();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnPlatos1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JButton btnMesas;
     private javax.swing.JButton btnPlatos;
+    private javax.swing.JButton btnPlatos1;
     private javax.swing.JPanel contentPrincipal;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel menu;
