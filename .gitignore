@@ -1,3 +1,7 @@
 *.class
+<<<<<<< HEAD
 /Sistema de Restaurante 01/build/
 /Sistema de Restaurante 01/nbproject/private/
+=======
+/Sistema de Restaurante 01/dist/
+>>>>>>> origin/Dr.Uribe
