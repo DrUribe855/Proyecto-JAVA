@@ -139,4 +139,22 @@ public class InterfazMesas extends javax.swing.JPanel {
     private javax.swing.JPanel JpanelMesas;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    public void verificarEstadoMesa(int mesas) {
+        for (int i = 0; i < mesas; i++) {
+            int mesasActivas = this.database.obtenerIdMesaPedidoActiva(i + 1);
+            if (mesasActivas != -1) {
+                // color de estado a oucpado
+                //System.out.println("Entro en estas condicion de ocupado");
+                Color rojoOcupado = new Color(255, 99, 71);
+                this.mesas[i].setBackground(rojoOcupado);
+            } else {
+                // color de estado a libre 
+                //System.out.println("Entro en estas condicion de libre");
+                Color verdeOscuro = new Color(46, 139, 87);
+                this.mesas[i].setBackground(verdeOscuro);
+            }
+        }
+    }
+
 }

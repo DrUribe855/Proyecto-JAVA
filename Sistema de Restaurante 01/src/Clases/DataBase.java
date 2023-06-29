@@ -215,6 +215,146 @@ public class DataBase {
         }
     }
 
+    public boolean registrarProducto(int id, String nombre, int precio) {
+        String consulta = "INSERT into productos(id, nombre, precio) values ('" + id + "','" + nombre + "','" + precio + "')";
+        try {
+            int respuesta = manipularDB.executeUpdate(consulta);
+            if (respuesta > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al insertar: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // creamo el metodo para consultar el plato que desea buscar 
+    public Plato consultarProducto(String nombre) {
+        Plato temp_p = null;
+        try {
+            ResultSet consulta_p = this.manipularDB.executeQuery("SELECT * FROM platos WHERE  nombre='" + nombre + "'");
+            consulta_p.next();
+            if (consulta_p.getRow() == 1) {
+                temp_p = new Plato(consulta_p.getString("codigo"), consulta_p.getString("nombre"), consulta_p.getDouble("precio"), consulta_p.getString("estado"));
+            }
+            return temp_p;
+        } catch (SQLException e) {
+            System.out.println("ERROR EN SELECT" + e.getMessage());
+            return temp_p;
+        }
+    }
+    
+    // INSERTAMOS EN LA BASE DE DATOS LOS ITEMS DEL PEDIDO DEPENDIENDO DE LA MESA PEDIDO 
+    public boolean insertarItemPedido(int id_mesa_pedido, int id_plato, int cantidad, double subtotal) {
+        String consulta = "INSERT INTO items_pedido(id_mesa_pedido,id_plato,cantidad,subtotal) VALUES ('" + id_mesa_pedido + "','" + id_plato + "','" + cantidad + "','" + subtotal + "')";
+        try {
+            int respuesta = manipularDB.executeUpdate(consulta);
+            if (respuesta > 0) {
+                System.out.println("REGISTRO DE ITEM CON EXITO");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR AL INSERTAR:" + e.getMessage());
+            return false;
+        }
+    }
+
+    // metodo para actualizar el metodo pedido 
+    public boolean actualizarTotalMesaPedido(int idMesaPedido, double nuevoTotal) {
+        try {
+            String consultaActualizacion = "UPDATE mesapedido SET total = " + nuevoTotal + " WHERE id_mesa = " + idMesaPedido;
+            int respuestaActualizacion = manipularDB.executeUpdate(consultaActualizacion);
+            if (respuestaActualizacion > 0) {
+                System.out.println("Se actualizó el total del pedido con ID " + idMesaPedido + ".");
+                return true;
+            } else {
+                System.out.println("No se pudo actualizar el total del pedido con ID " + idMesaPedido + ".");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR AL ACTUALIZAR EL TOTAL DEL PEDIDO: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean actulizarEstadoPedido(int idMesaPedido, String estado) {
+        try {
+            String actualizarEstado = "UPDATE mesapedido SET estado = '" + estado + "' WHERE id = " + idMesaPedido;
+            int respuestaEstado = manipularDB.executeUpdate(actualizarEstado);
+            if (respuestaEstado > 0) {
+                System.out.println("SE ACTULIZO EL ESTADO DE LA MESA ");
+                return true;
+            } else {
+                System.out.println("NO SE PUEDO CAMBIAR EL ESTAD DE LA MESA" + idMesaPedido);
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR AL ACTUALIZAR EL ESTADO DE LA MESA : " + e.getMessage());
+            return false;
+        }
+    }
+
+    // metodo par insertal la factura de la mesa pedido si esta activa y no cancelada 
+    public boolean insertarFacturaMesaPedido(String fecha, int id_mesaPedido) {
+        String consulta = "INSERT INTO factura(fecha,id_mesa_pedido) VALUES ('" +fecha + "','" + id_mesaPedido + "')";
+        try {
+            int respuesta = manipularDB.executeUpdate(consulta);
+            if (respuesta > 0) {
+                System.out.println("REGISTRO DE ITEM CON EXITO");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR AL INSERTAR:" + e.getMessage());
+            return false;
+        }
+    }
+
+    // obtenemos el total de mesa pedido 
+    public double obtenerTotalMesaPedido(int idMesaPedido) {
+        try {
+            String consulta = "SELECT total FROM mesapedido WHERE id = " + idMesaPedido;
+            ResultSet resultado = manipularDB.executeQuery(consulta);
+            resultado.next();
+            if (resultado.getRow() == 1) {
+                double total = Double.parseDouble(resultado.getString("total"));
+                System.out.println("TOTAL DE LA BASE DE DATOS " + total);
+                resultado.close();
+                return total;
+            } else {
+                System.out.println("No se encontró el pedido con ID " + idMesaPedido + ".");
+                resultado.close();
+                return 0.0;
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR AL OBTENER EL TOTAL DEL PEDIDO: " + e.getMessage());
+            return 0.0;
+        }
+    }
+
+    public ResultSet getListaItems(int idMesaPedido) {
+        try {
+            String consulta = "SELECT * FROM items_pedido INNER JOIN platos ON items_pedido.id_plato = platos.codigo WHERE id_mesa_pedido = " + idMesaPedido;
+            ResultSet resultado = manipularDB.executeQuery(consulta);
+            resultado.next();
+
+            if (resultado.getRow() == 1) {
+                return resultado;
+            }
+
+            return null;
+        } catch (SQLException e) {
+            System.out.println("ERROR AL OBTENER LOS ITEMS DEL PEDIDO: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    
 }
 
 
