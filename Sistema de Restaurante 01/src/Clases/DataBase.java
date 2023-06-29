@@ -105,6 +105,26 @@ public class DataBase {
         }
     }
     
+    public Factura[] getListaFacturas (){
+        Factura[] listaFacturas = new Factura[100];
+        try{
+            ResultSet registro_p = this.manipularDB.executeQuery("SELECT factura.*, mesapedido.total, mesapedido.id_mesa FROM factura INNER JOIN mesapedido ON factura.id_mesa_pedido = mesapedido.id");
+            registro_p.next();
+            if (registro_p.getRow()==1) {
+                int indice = 0;
+                do{
+                    listaFacturas[indice] = new Factura(registro_p.getString("id"), registro_p.getString("fecha"), registro_p.getString("total"), registro_p.getString("id_mesa_pedido"), registro_p.getString("id_mesa"));
+                    indice++;
+                }while(registro_p.next());
+            }
+            return listaFacturas;
+        }catch(SQLException e){
+            System.out.println("Error en SELECT" + e.getMessage());
+            return listaFacturas;
+        }
+    }
+    
+    
     //Modulo mesas
     
     public boolean registrarMesas(int mesas) {

@@ -7,6 +7,7 @@ import Login.Login;
 import ModuloMesas.InterfazMesas;
 import ModuloPlatos.ListarPlatos;
 import ModuloPlatos.RegistrarMenu;
+import ModuloVentas.RegistroVentas;
 import javax.swing.JFrame;
 
 import javax.swing.JPanel;
@@ -40,6 +41,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
         btnPlatos = new javax.swing.JButton();
         btnMesas = new javax.swing.JButton();
         btnPlatos1 = new javax.swing.JButton();
+        btnPlatos3 = new javax.swing.JButton();
         contentPrincipal = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,6 +111,23 @@ public class PrincipalInterface extends javax.swing.JFrame {
             }
         });
 
+        btnPlatos3.setBackground(new java.awt.Color(21, 101, 192));
+        btnPlatos3.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 18)); // NOI18N
+        btnPlatos3.setForeground(new java.awt.Color(255, 255, 255));
+        btnPlatos3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-log-out-40.png"))); // NOI18N
+        btnPlatos3.setText("Registro de ventas");
+        btnPlatos3.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 10, 5, 1, new java.awt.Color(0, 0, 0)));
+        btnPlatos3.setBorderPainted(false);
+        btnPlatos3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPlatos3.setFocusPainted(false);
+        btnPlatos3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPlatos3.setIconTextGap(35);
+        btnPlatos3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlatos3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuLayout = new javax.swing.GroupLayout(menu);
         menu.setLayout(menuLayout);
         menuLayout.setHorizontalGroup(
@@ -120,6 +139,7 @@ public class PrincipalInterface extends javax.swing.JFrame {
             .addComponent(btnMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(btnPlatos1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(btnPlatos, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnPlatos3, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         menuLayout.setVerticalGroup(
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +154,10 @@ public class PrincipalInterface extends javax.swing.JFrame {
                     .addGroup(menuLayout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addComponent(btnPlatos1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnPlatos)))
+                    .addComponent(btnPlatos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPlatos3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         background.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 470));
@@ -225,12 +248,22 @@ public class PrincipalInterface extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_btnPlatos1ActionPerformed
 
+    private void btnPlatos3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlatos3ActionPerformed
+        this.contentPrincipal.removeAll();
+        this.contentPrincipal.repaint();
+        RegistroVentas contenFacturas = new RegistroVentas(this, database);
+        contenFacturas.setSize(this.contentPrincipal.getSize());
+        contentPrincipal.add(contenFacturas);
+        revalidate();
+    }//GEN-LAST:event_btnPlatos3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JButton btnMesas;
     private javax.swing.JButton btnPlatos;
     private javax.swing.JButton btnPlatos1;
+    private javax.swing.JButton btnPlatos3;
     private javax.swing.JPanel contentPrincipal;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel menu;
