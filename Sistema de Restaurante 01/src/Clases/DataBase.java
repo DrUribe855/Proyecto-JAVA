@@ -231,10 +231,10 @@ public class DataBase {
     }
 
     // creamo el metodo para consultar el plato que desea buscar 
-    public Plato consultarProducto(String nombre) {
+    public Plato consultarProducto(String codigo) {
         Plato temp_p = null;
         try {
-            ResultSet consulta_p = this.manipularDB.executeQuery("SELECT * FROM platos WHERE  nombre='" + nombre + "'");
+            ResultSet consulta_p = this.manipularDB.executeQuery("SELECT * FROM platos WHERE  codigo='" + codigo + "'");
             consulta_p.next();
             if (consulta_p.getRow() == 1) {
                 temp_p = new Plato(consulta_p.getString("codigo"), consulta_p.getString("nombre"), consulta_p.getDouble("precio"), consulta_p.getString("estado"));

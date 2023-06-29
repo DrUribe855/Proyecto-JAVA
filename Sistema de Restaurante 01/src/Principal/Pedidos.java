@@ -2,7 +2,7 @@ package Principal;
 
 import Clases.*;
 import ModuloMesas.InterfazMesas;
-import com.mysql.cj.protocol.Resultset;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,8 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -93,12 +92,12 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     public void agregarPlato() {
-        String plato = this.tpPlato.getText();
+        String plato = this.plato.getText().trim();
         String cantidad = this.cantPlatos.getText();
 
         Plato platos = this.Pedido.database.consultarProducto(plato);
 
-        if (!plato.equals("") && !cantidad.isEmpty() && platos != null) {
+        if (!plato.equals("") && !cantidad.isEmpty() && platos != null && platos.getEstado().equals("Activo")) {
             // AQUI AGREGAMOS LA MESA PEDIDO DE DICHA MESA
             // creamos la fecha 
 
@@ -173,6 +172,8 @@ public class Pedidos extends javax.swing.JFrame {
             }
         } else {
             System.out.println("LA CANTIDAD DE PLATOS NO PUEDE ESTAR VACÍA");
+            System.out.println("EL ESTADO DEL PLATO ES AGOTADO");
+            Alert alerta = new Alert("PEDIDO", "EL PEDIDO NO ESTA DISPONIBLE .", "error");
             return; // Agregar esta línea para finalizar la ejecución del método
         }
 
@@ -198,30 +199,6 @@ public class Pedidos extends javax.swing.JFrame {
         return (contador <= 1);
     }
 
-    //esto lo comente ya que solo era para ver lo que llegaba en consola
-    /*
-    public void mostrarPedidos(int mesa) {
-        if (this.Pedido.pedidos_mesas != null && mesa >= 0 && mesa < this.Pedido.pedidos_mesas.length) {
-            System.out.println("Mesa: " + mesa);
-            for (int j = 0; j < this.Pedido.pedidos_mesas[mesa].length; j++) {
-                MesaP pedido = this.Pedido.pedidos_mesas[mesa][j];
-                if (pedido != null) {
-                    System.out.println("ID de la factura: " + pedido.getIdFactura());
-                    System.out.println("Identificador del plato:" + pedido.getIdentificador());
-                    System.out.println("Numero de Pedido:" + j);
-                    System.out.println("Nombre del plato: " + pedido.getNombrePlato());
-                    System.out.println("Cantidad de platos: " + pedido.getCantidadPlatos());
-                    System.out.println("Subtotal: " + pedido.getSubtotal());
-                    System.out.println("--------------------");
-                }
-            }
-            // aqui mostramos tambien el total de la compra que valla el agregando
-            //this.total.setText(Double.toString(total_final));
-        } else {
-            System.out.println("No hay pedidos para la mesa especificada.");
-        }
-    }
-     */
     // metodo para cargar los datos previso si tiene de la base de datos
     private void cargarDatosPrevios() {
         int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
@@ -254,6 +231,7 @@ public class Pedidos extends javax.swing.JFrame {
             if (uptadeEstadoExitoso) {
                 System.out.println("SE A CANCELADO EL PEDIDO CON EXITO");
                 this.Pedido.verificarEstadoMesa(pedido_mesa + 1);
+                Alert alerta = new Alert("CANCELAR PEDIDO", "PEDIDO CANCELADO", "success");
             } else {
                 System.out.println("ERROR AL CANCELAR EL PEDIDO DE LA MESA" + idMesaPedido);
             }
@@ -282,9 +260,10 @@ public class Pedidos extends javax.swing.JFrame {
                 boolean exitoso = this.Pedido.database.insertarFacturaMesaPedido(fecha, idMesaPedido);
                 if (exitoso) {
                     System.out.println("PAGO EXITOSO");
+                    Alert alerta = new Alert("FACTURA", "PAGO REGISTRADO CON EXITO", "success");
                 } else {
                     System.out.println("SE A PAGADO LA FACTURA CON EXITO");
-
+                    Alert alerta = new Alert("FACTURA", "FACTURA NO REALIZADA", "error");
                 }
                 this.Pedido.verificarEstadoMesa(pedido_mesa + 1);
             } else {
@@ -519,7 +498,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_volver2)
                     .addComponent(btn_volver)
@@ -539,7 +518,7 @@ public class Pedidos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ventanaPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ventanaPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
