@@ -234,6 +234,7 @@ public class Pedidos extends javax.swing.JFrame {
                 Alert alerta = new Alert("CANCELAR PEDIDO", "PEDIDO CANCELADO", "success");
             } else {
                 System.out.println("ERROR AL CANCELAR EL PEDIDO DE LA MESA" + idMesaPedido);
+                
             }
         }
     }
@@ -539,17 +540,28 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
         // aqui va el codigo para cancelar el pedido en el caso que el usuario no desee pedir nada al final
-        cancelarPedido();
-
-        Pedido.setVisible(true);
-        dispose();
+        // hacemos una condicion si el estado esta activo que cncela el pedido de lo contrario que no haga nada 
+        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        if(idMesaPedido!=-1){
+            cancelarPedido();
+            Pedido.setVisible(true);
+            dispose();
+        }else{
+             Alert alerta = new Alert("ERROR", "NO HAY PEDIDOS POR CANCELAR", "error");
+        }
     }//GEN-LAST:event_btn_volverActionPerformed
 
     private void btn_volver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volver1ActionPerformed
         // aqui va el metodo par confirmal el pago de la compra
-        confimarFactura();
-        Pedido.setVisible(true);
-        dispose();
+        // hacemos lo mismo con la factura 
+        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        if(idMesaPedido!=-1){
+            confimarFactura();
+            Pedido.setVisible(true);
+            dispose();
+        }else{
+             Alert alerta = new Alert("ERROR", "NO HAY PEDIDOS PARA FACTURAR", "error");
+        }
     }//GEN-LAST:event_btn_volver1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

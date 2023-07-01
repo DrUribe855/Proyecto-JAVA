@@ -275,7 +275,7 @@ public class DataBase {
                 System.out.println("No se pudo actualizar el total del pedido con ID " + idMesaPedido + ".");
                 return false;
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) { 
             System.out.println("ERROR AL ACTUALIZAR EL TOTAL DEL PEDIDO: " + e.getMessage());
             return false;
         }
