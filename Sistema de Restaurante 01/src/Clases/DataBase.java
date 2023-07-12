@@ -178,6 +178,24 @@ public class DataBase {
         }
     }
     
+    public int obtenerIdMesaPedidoPagada(int numeroMesa){
+        System.out.println(numeroMesa);
+        int idMesaPedidoPagada = -1;
+        try {
+            String consulta = "SELECT id FROM mesapedido WHERE id_mesa = " + numeroMesa + " AND estado = 'pagado'";
+            ResultSet resultado = manipularDB.executeQuery(consulta);
+            if(resultado.next()){
+                idMesaPedidoPagada = resultado.getInt("id");
+            }
+            
+            resultado.close();
+        } catch (SQLException e) {
+            System.out.println("Error al obtener el ID del pedido activo: " + e.getMessage());
+        }
+        
+        return idMesaPedidoPagada;
+    }
+    
     public int obtenerIdMesaPedidoActiva(int numeroMesa) {
         int idMesaPedidoActiva = -1; // Valor predeterminado en caso de no encontrar un pedido activo
 
@@ -286,7 +304,7 @@ public class DataBase {
     // metodo para actualizar el metodo pedido 
     public boolean actualizarTotalMesaPedido(int idMesaPedido, double nuevoTotal) {
         try {
-            String consultaActualizacion = "UPDATE mesapedido SET total = " + nuevoTotal + " WHERE id_mesa = " + idMesaPedido;
+            String consultaActualizacion = "UPDATE mesapedido SET total = " + nuevoTotal + " WHERE id_mesa = " + idMesaPedido+ " AND estado = 'activo'";
             int respuestaActualizacion = manipularDB.executeUpdate(consultaActualizacion);
             if (respuestaActualizacion > 0) {
                 System.out.println("Se actualizó el total del pedido con ID " + idMesaPedido + ".");

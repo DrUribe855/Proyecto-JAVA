@@ -41,7 +41,9 @@ public class InterfazMesas extends javax.swing.JPanel {
         JpanelMesas.setBackground(Color.WHITE);
 
         agregarMesas();
+        verificarEstadoMesa(this.cant_mesas);
     }
+    
     
     public void agregarMesas(){
         //Creamos un evento para que genere otra ventana en la cual saldrá la orden. 

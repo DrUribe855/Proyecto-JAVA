@@ -2,7 +2,6 @@ package Principal;
 
 import Clases.*;
 import ModuloMesas.InterfazMesas;
-import com.mysql.cj.protocol.Resultset;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -560,10 +557,14 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void btn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volverActionPerformed
         // aqui va el codigo para cancelar el pedido en el caso que el usuario no desee pedir nada al final
-        cancelarPedido();
-
-        Pedido.setVisible(true);
-        dispose();
+        int idMesaPedido = this.Pedido.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        if(idMesaPedido!=-1){
+            cancelarPedido();
+            Pedido.setVisible(true);
+            dispose();
+        }else{
+            Alert alerta = new Alert("ERROR", "NO HAY PEDIDOS POR CANCELAR", "error");
+        }
     }//GEN-LAST:event_btn_volverActionPerformed
 
     private void btn_volver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_volver1ActionPerformed

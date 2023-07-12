@@ -38,7 +38,7 @@ public class DetallePedidos extends javax.swing.JFrame {
     // agregamos el initalternat 
     public void initAlternComponents() {
         setLocationRelativeTo(null);
-        numeroMesa.setText("MESA #" + (this.pedido_mesa + 1));
+        numeroMesa.setText("MESA #" + (this.pedido_mesa));
         // creamo el evento para agregarselo al input 
         this.modelo = (DefaultTableModel) this.tablaItemsPedido.getModel();
     }
@@ -61,33 +61,10 @@ public class DetallePedidos extends javax.swing.JFrame {
         return (contador <= 1);
     }
 
-    //esto lo comente ya que solo era para ver lo que llegaba en consola
-    /*
-    public void mostrarPedidos(int mesa) {
-        if (this.Pedido.pedidos_mesas != null && mesa >= 0 && mesa < this.Pedido.pedidos_mesas.length) {
-            System.out.println("Mesa: " + mesa);
-            for (int j = 0; j < this.Pedido.pedidos_mesas[mesa].length; j++) {
-                MesaP pedido = this.Pedido.pedidos_mesas[mesa][j];
-                if (pedido != null) {
-                    System.out.println("ID de la factura: " + pedido.getIdFactura());
-                    System.out.println("Identificador del plato:" + pedido.getIdentificador());
-                    System.out.println("Numero de Pedido:" + j);
-                    System.out.println("Nombre del plato: " + pedido.getNombrePlato());
-                    System.out.println("Cantidad de platos: " + pedido.getCantidadPlatos());
-                    System.out.println("Subtotal: " + pedido.getSubtotal());
-                    System.out.println("--------------------");
-                }
-            }
-            // aqui mostramos tambien el total de la compra que valla el agregando
-            //this.total.setText(Double.toString(total_final));
-        } else {
-            System.out.println("No hay pedidos para la mesa especificada.");
-        }
-    }
-     */
     // metodo para cargar los datos previso si tiene de la base de datos
     private void cargarDatosPrevios() {
-        int idMesaPedido = this.database.obtenerIdMesaPedidoActiva(pedido_mesa + 1);
+        int idMesaPedido = this.database.obtenerIdMesaPedidoPagada(pedido_mesa);
+        System.out.println(idMesaPedido);
         total_final = (idMesaPedido != -1) ? this.database.obtenerTotalMesaPedido(idMesaPedido) : 0;
         this.total.setText(String.valueOf(total_final));
 
@@ -100,7 +77,7 @@ public class DetallePedidos extends javax.swing.JFrame {
                     this.modelo.addRow(nuevoItem);
                 } while (listaItems.next());
             } catch (SQLException ex) {
-                System.out.println("Erro al extraer los datos: " + ex.getMessage());
+                System.out.println("Error al extraer los datos: " + ex.getMessage());
             }
         }
     }
@@ -117,7 +94,7 @@ public class DetallePedidos extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaItemsPedido = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(52, 73, 94));
@@ -182,25 +159,29 @@ public class DetallePedidos extends javax.swing.JFrame {
         ventanaPedidosLayout.setHorizontalGroup(
             ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                .addGap(0, 1, Short.MAX_VALUE)
+                .addGap(419, 419, 419)
+                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(ventanaPedidosLayout.createSequentialGroup()
                 .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(ventanaPedidosLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ventanaPedidosLayout.createSequentialGroup()
+                        .addGap(0, 476, Short.MAX_VALUE)
+                        .addComponent(jLabel5)))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         ventanaPedidosLayout.setVerticalGroup(
             ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaPedidosLayout.createSequentialGroup()
-                .addGap(228, 228, 228)
+                .addGap(23, 23, 23)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(ventanaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(162, 162, 162)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -215,7 +196,7 @@ public class DetallePedidos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ventanaPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ventanaPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
