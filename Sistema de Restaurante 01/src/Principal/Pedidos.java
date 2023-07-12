@@ -563,7 +563,7 @@ public class Pedidos extends javax.swing.JFrame {
             Pedido.setVisible(true);
             dispose();
         }else{
-            Alert alerta = new Alert("ERROR", "NO HAY PEDIDOS POR CANCELAR", "error");
+            
         }
     }//GEN-LAST:event_btn_volverActionPerformed
 
