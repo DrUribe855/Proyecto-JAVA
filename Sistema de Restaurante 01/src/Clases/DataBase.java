@@ -266,7 +266,7 @@ public class DataBase {
     // metodo para actualizar el metodo pedido 
     public boolean actualizarTotalMesaPedido(int idMesaPedido, double nuevoTotal) {
         try {
-            String consultaActualizacion = "UPDATE mesapedido SET total = " + nuevoTotal + " WHERE id_mesa = " + idMesaPedido;
+            String consultaActualizacion = "UPDATE mesapedido SET total = " + nuevoTotal + " WHERE id_mesa = " + idMesaPedido+ " AND estado = 'activo'";
             int respuestaActualizacion = manipularDB.executeUpdate(consultaActualizacion);
             if (respuestaActualizacion > 0) {
                 System.out.println("Se actualizó el total del pedido con ID " + idMesaPedido + ".");
