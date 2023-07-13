@@ -24,11 +24,13 @@ public class DetallePedidos extends javax.swing.JFrame {
     private String estado = "activo";
     private DefaultTableModel modelo;
     private DataBase database;
+    private String numeroVenta;
     // este es el id de mesa pedido de la base de datos
 
-    public DetallePedidos(DataBase database, int pedido_mesa) {
+    public DetallePedidos(DataBase database, int pedido_mesa, String numeroVenta) {
         this.database = database;
         this.pedido_mesa = pedido_mesa;
+        this.numeroVenta = numeroVenta;
         initComponents();
         initAlternComponents();
 
@@ -63,7 +65,7 @@ public class DetallePedidos extends javax.swing.JFrame {
 
     // metodo para cargar los datos previso si tiene de la base de datos
     private void cargarDatosPrevios() {
-        int idMesaPedido = this.database.obtenerIdMesaPedidoPagada(pedido_mesa);
+        int idMesaPedido = this.database.obtenerIdMesaPedidoPagada(Integer.parseInt(numeroVenta));
         System.out.println(idMesaPedido);
         total_final = (idMesaPedido != -1) ? this.database.obtenerTotalMesaPedido(idMesaPedido) : 0;
         this.total.setText(String.valueOf(total_final));

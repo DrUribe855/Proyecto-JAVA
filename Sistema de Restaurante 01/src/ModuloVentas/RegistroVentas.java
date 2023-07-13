@@ -47,7 +47,7 @@ public class RegistroVentas extends javax.swing.JPanel {
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        abrirVentanaDetalleFactura( temporal );
+                        abrirVentanaDetalleFactura( temporal, temporal.getId_venta() );
                     }
                 });
 
@@ -59,9 +59,9 @@ public class RegistroVentas extends javax.swing.JPanel {
         revalidate();
     }
     
-    public void abrirVentanaDetalleFactura(Factura factura){
+    public void abrirVentanaDetalleFactura(Factura factura, String numeroVenta){
         int numeroMesa = Integer.parseInt(factura.getNumeroMesa()) ;
-        DetallePedidos ventana = new DetallePedidos(database, numeroMesa);
+        DetallePedidos ventana = new DetallePedidos(database, numeroMesa, numeroVenta);
         ventana.setVisible(true);
     }
 

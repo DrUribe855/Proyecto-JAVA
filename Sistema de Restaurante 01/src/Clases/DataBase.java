@@ -178,14 +178,14 @@ public class DataBase {
         }
     }
     
-    public int obtenerIdMesaPedidoPagada(int numeroMesa){
-        System.out.println(numeroMesa);
+    public int obtenerIdMesaPedidoPagada(int numeroVenta){
+        System.out.println(numeroVenta);
         int idMesaPedidoPagada = -1;
         try {
-            String consulta = "SELECT id FROM mesapedido WHERE id_mesa = " + numeroMesa + " AND estado = 'pagado'";
+            String consulta = "SELECT id_mesa_pedido FROM factura WHERE id = " + numeroVenta;
             ResultSet resultado = manipularDB.executeQuery(consulta);
             if(resultado.next()){
-                idMesaPedidoPagada = resultado.getInt("id");
+                idMesaPedidoPagada = resultado.getInt("id_mesa_pedido");
             }
             
             resultado.close();
