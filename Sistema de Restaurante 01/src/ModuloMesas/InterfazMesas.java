@@ -1,3 +1,4 @@
+ 
 package ModuloMesas;
 
 import Principal.Pedidos;
@@ -15,15 +16,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+ 
 public class InterfazMesas extends javax.swing.JPanel {
-
     private PrincipalInterface principal;
     public DataBase database;
     private int cant_mesas = 12;
     private JLabel estado[];
     private JButton mesas[];
     public MesaP pedidos_mesas[][];
-
+     
     public InterfazMesas(PrincipalInterface principal, DataBase database) {
         this.principal = principal;
         this.database = database;
@@ -31,10 +32,10 @@ public class InterfazMesas extends javax.swing.JPanel {
         initAlternComponents();
         this.pedidos_mesas = new MesaP[cant_mesas][100];
         database.registrarMesas(cant_mesas);
-
+        
     }
-
-    public void initAlternComponents() {
+    
+    public void initAlternComponents(){
         JpanelMesas.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
         JpanelMesas.setLayout(new GridLayout(0, 4, 10, 10)); // 5 columnas con margen de 10 píxeles
         JpanelMesas.setBackground(Color.WHITE);
@@ -42,26 +43,9 @@ public class InterfazMesas extends javax.swing.JPanel {
         agregarMesas();
         verificarEstadoMesa(this.cant_mesas);
     }
-
-    // metodo para verificar el estado de la mesa 
-    public void verificarEstadoMesa(int mesas) {
-        for (int i = 0; i < mesas; i++) {
-            int mesasActivas = this.database.obtenerIdMesaPedidoActiva(i + 1);
-            if (mesasActivas != -1) {
-                // color de estado a oucpado
-                //System.out.println("Entro en estas condicion de ocupado");
-                Color rojoOcupado = new Color(255, 99, 71);
-                this.mesas[i].setBackground(rojoOcupado);
-            } else {
-                // color de estado a libre 
-                //System.out.println("Entro en estas condicion de libre");
-                Color verdeOscuro = new Color(46, 139, 87);
-                this.mesas[i].setBackground(verdeOscuro);
-            }
-        }
-    }
-
-    public void agregarMesas() {
+    
+    
+    public void agregarMesas(){
         //Creamos un evento para que genere otra ventana en la cual saldrá la orden. 
         mesas = new JButton[cant_mesas];
         estado = new JLabel[cant_mesas];
@@ -96,12 +80,12 @@ public class InterfazMesas extends javax.swing.JPanel {
 
         revalidate();
     }
-
-    public void abrirVentanaPedido(int numeroMesa) {
-        int idMesaPedidoActiva = this.database.obtenerIdMesaPedidoActiva(numeroMesa + 1);
+    
+    public void abrirVentanaPedido(int numeroMesa){
+        int idMesaPedidoActiva = this.database.obtenerIdMesaPedidoActiva(numeroMesa+1);
         if (idMesaPedidoActiva != -1) {
             // Hay un pedido activo para la mesa, mostrar los datos
-            System.out.println("Entro aqui en la primera condicion" + numeroMesa);
+            System.out.println("Entro aqui en la primera condicion"+numeroMesa);
             //setVisible(false);
 
             Pedidos ventana = new Pedidos(this, numeroMesa);
@@ -117,7 +101,7 @@ public class InterfazMesas extends javax.swing.JPanel {
             Pedidos ventana = new Pedidos(this, numeroMesa);
             ventana.setVisible(true);
         }
-
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -131,7 +115,7 @@ public class InterfazMesas extends javax.swing.JPanel {
         JpanelMesas.setLayout(JpanelMesasLayout);
         JpanelMesasLayout.setHorizontalGroup(
             JpanelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 674, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         JpanelMesasLayout.setVerticalGroup(
             JpanelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,11 +128,11 @@ public class InterfazMesas extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -157,5 +141,22 @@ public class InterfazMesas extends javax.swing.JPanel {
     private javax.swing.JPanel JpanelMesas;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    public void verificarEstadoMesa(int mesas) {
+        for (int i = 0; i < mesas; i++) {
+            int mesasActivas = this.database.obtenerIdMesaPedidoActiva(i + 1);
+            if (mesasActivas != -1) {
+                // color de estado a oucpado
+                //System.out.println("Entro en estas condicion de ocupado");
+                Color rojoOcupado = new Color(255, 99, 71);
+                this.mesas[i].setBackground(rojoOcupado);
+            } else {
+                // color de estado a libre 
+                //System.out.println("Entro en estas condicion de libre");
+                Color verdeOscuro = new Color(46, 139, 87);
+                this.mesas[i].setBackground(verdeOscuro);
+            }
+        }
+    }
 
 }
