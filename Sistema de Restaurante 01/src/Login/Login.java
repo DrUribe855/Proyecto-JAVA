@@ -1,54 +1,55 @@
-
 package Login;
 
 import Clases.DataBase;
-import Principal.PrincipalInterface;
+import Principal.*;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 import java.sql.*;
+
 import javax.swing.BorderFactory;
 
 public class Login extends javax.swing.JFrame {
-    
+
     public DataBase database;
 
     public Login() {
-        
+
         this.database = new DataBase();
         initComponents();
         initAlternComponent();
     }
-    
-    public void initAlternComponent(){
+
+    public void initAlternComponent() {
         setLocationRelativeTo(null);
-        Login.this.setBackground(new Color (0,0,0,0));
-        
-        
+        Login.this.setBackground(new Color(0, 0, 0, 0));
+
     }
-    
-   
-    
-    public void iniciarSesion(){
+
+    public void iniciarSesion() {
         String user = this.campoUsuario.getText();
-        String password  = String.valueOf(this.campoContrasenia.getPassword());
-        if(!user.equals("") && !password.equals("")){
+        String password = String.valueOf(this.campoContrasenia.getPassword());
+        if (!user.equals("") && !password.equals("")) {
             try {
                 ResultSet usuario = this.database.log(user, password);
-                if(usuario != null && usuario.getRow()==1){
-                    if(user.equals(usuario.getString("usuario")) && password.equals(usuario.getString("password"))){
+                if (usuario != null && usuario.getRow() == 1) {
+                    if (user.equals(usuario.getString("usuario")) && password.equals(usuario.getString("password"))) {
                         dispose();
                         PrincipalInterface window = new PrincipalInterface(database);
                         window.setVisible(true);
+                        Alert alerta = new Alert(usuario.getString("usuario"), "BIENVENIDO", "success");
                     }
+                } else {
+                    Alert alerta = new Alert("INCORRECTOS", "USUARIO O CONTRASEÑA INCORRECTA", "error");
                 }
             } catch (SQLException e) {
-                System.out.println("Error en inicio de sesion: "+e.getMessage());
+                System.out.println("Error en inicio de sesion: " + e.getMessage());
             }
+        } else {
+            Alert alerta = new Alert("INICIO", "LOS CAMPOS ESTAN VACIOS ", "error");
         }
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -212,8 +213,8 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-         Shape roundedShape = new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20);
-         setShape(roundedShape);
+        Shape roundedShape = new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20);
+        setShape(roundedShape);
     }//GEN-LAST:event_formWindowOpened
 
     private void jEImagePanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEImagePanel1MouseClicked
@@ -224,9 +225,8 @@ public class Login extends javax.swing.JFrame {
         iniciarSesion();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
     public static void main(String args[]) {
-      
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);

@@ -105,6 +105,26 @@ public class DataBase {
         }
     }
     
+    public Factura[] getListaFacturas (){
+        Factura[] listaFacturas = new Factura[100];
+        try{
+            ResultSet registro_p = this.manipularDB.executeQuery("SELECT factura.*, mesapedido.total, mesapedido.id_mesa FROM factura INNER JOIN mesapedido ON factura.id_mesa_pedido = mesapedido.id");
+            registro_p.next();
+            if (registro_p.getRow()==1) {
+                int indice = 0;
+                do{
+                    listaFacturas[indice] = new Factura(registro_p.getString("id"), registro_p.getString("fecha"), registro_p.getString("total"), registro_p.getString("id_mesa_pedido"), registro_p.getString("id_mesa"));
+                    indice++;
+                }while(registro_p.next());
+            }
+            return listaFacturas;
+        }catch(SQLException e){
+            System.out.println("Error en SELECT" + e.getMessage());
+            return listaFacturas;
+        }
+    }
+    
+    
     //Modulo mesas
     
     public boolean registrarMesas(int mesas) {
@@ -156,6 +176,24 @@ public class DataBase {
             System.out.println("Error al insertar los elementos del arreglo: " + e.getMessage());
             return false; // En caso de excepción, se retorna false
         }
+    }
+    
+    public int obtenerIdMesaPedidoPagada(int numeroVenta){
+        System.out.println("ESTE ES EL NUMERO DE VENTA DE LA FACTURA"+numeroVenta);
+        int idMesaPedidoPagada = -1;
+        try {
+            String consulta = "SELECT id_mesa_pedido FROM factura WHERE id = " + numeroVenta;
+            ResultSet resultado = manipularDB.executeQuery(consulta);
+            if(resultado.next()){
+                idMesaPedidoPagada = resultado.getInt("id_mesa_pedido");
+            }
+            
+            resultado.close();
+        } catch (SQLException e) {
+            System.out.println("Error al obtener el ID del pedido activo: " + e.getMessage());
+        }
+        
+        return idMesaPedidoPagada;
     }
     
     public int obtenerIdMesaPedidoActiva(int numeroMesa) {
@@ -231,10 +269,10 @@ public class DataBase {
     }
 
     // creamo el metodo para consultar el plato que desea buscar 
-    public Plato consultarProducto(String nombre) {
+   public Plato consultarProducto(String codigo) {
         Plato temp_p = null;
         try {
-            ResultSet consulta_p = this.manipularDB.executeQuery("SELECT * FROM platos WHERE  nombre='" + nombre + "'");
+            ResultSet consulta_p = this.manipularDB.executeQuery("SELECT * FROM platos WHERE  codigo='" + codigo + "'");
             consulta_p.next();
             if (consulta_p.getRow() == 1) {
                 temp_p = new Plato(consulta_p.getString("codigo"), consulta_p.getString("nombre"), consulta_p.getDouble("precio"), consulta_p.getString("estado"));
@@ -266,7 +304,7 @@ public class DataBase {
     // metodo para actualizar el metodo pedido 
     public boolean actualizarTotalMesaPedido(int idMesaPedido, double nuevoTotal) {
         try {
-            String consultaActualizacion = "UPDATE mesapedido SET total = " + nuevoTotal + " WHERE id_mesa = " + idMesaPedido;
+            String consultaActualizacion = "UPDATE mesapedido SET total = " + nuevoTotal + " WHERE id_mesa = " + idMesaPedido+ " AND estado = 'activo'";
             int respuestaActualizacion = manipularDB.executeUpdate(consultaActualizacion);
             if (respuestaActualizacion > 0) {
                 System.out.println("Se actualizó el total del pedido con ID " + idMesaPedido + ".");

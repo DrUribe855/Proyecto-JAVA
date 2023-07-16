@@ -3,11 +3,7 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-<<<<<<< HEAD
-            <name>Sistema de Restaurante 01</name>
-=======
             <name>Restaurante</name>
->>>>>>> origin/Dr.Uribe
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

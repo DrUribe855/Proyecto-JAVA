@@ -41,7 +41,9 @@ public class InterfazMesas extends javax.swing.JPanel {
         JpanelMesas.setBackground(Color.WHITE);
 
         agregarMesas();
+        verificarEstadoMesa(this.cant_mesas);
     }
+    
     
     public void agregarMesas(){
         //Creamos un evento para que genere otra ventana en la cual saldrá la orden. 
@@ -113,7 +115,7 @@ public class InterfazMesas extends javax.swing.JPanel {
         JpanelMesas.setLayout(JpanelMesasLayout);
         JpanelMesasLayout.setHorizontalGroup(
             JpanelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 674, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         JpanelMesasLayout.setVerticalGroup(
             JpanelMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,11 +128,11 @@ public class InterfazMesas extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
     }// </editor-fold>//GEN-END:initComponents
 
